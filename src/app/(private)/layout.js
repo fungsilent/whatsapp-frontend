@@ -2,15 +2,20 @@
 import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
 import { useAppStore } from '#root/app/store'
+import { connectWebSocket } from '#root/api/socket'
 import { fetchUserInfo } from '#root/api/user'
 import useFetch from '#root/hooks/useFetch'
 
 const PrivateLayout = ({ children }) => {
-    const { isAuth, setUser } = useAppStore()
-    const [dispatchFetch, user, isLoading, error] = useFetch({ initLoading: true, log: 'fetchUserInfo' })
+    const { isAuth, setUser, setSocket } = useAppStore()
+    const [dispatchFetch, user, isLoading, error] = useFetch({
+        initLoading: true,
+        log: 'fetchUserInfo',
+    })
 
     useEffect(() => {
         dispatchFetch(fetchUserInfo)
+        setSocket(connectWebSocket())
     }, [])
 
     useEffect(() => {
@@ -24,10 +29,10 @@ const PrivateLayout = ({ children }) => {
     }, [isLoading])
 
     return (
-        <div id='PrivateLayout'>
-            {!isAuth && 'Loading'}
+        <>
+            {!isAuth && <div>Loading</div>}
             {isAuth && children}
-        </div>
+        </>
     )
 }
 
