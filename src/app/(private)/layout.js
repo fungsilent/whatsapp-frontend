@@ -10,7 +10,7 @@ const PrivateLayout = ({ children }) => {
     const { isAuth, setUser, setSocket } = useAppStore()
     const [dispatchFetch, user, isLoading, error] = useFetch({
         initLoading: true,
-        log: 'fetchUserInfo',
+        // log: 'fetchUserInfo',
     })
 
     useEffect(() => {
@@ -29,10 +29,10 @@ const PrivateLayout = ({ children }) => {
     }, [isLoading])
 
     return (
-        <>
+        <div id='PrivateLayout'>
             {!isAuth && <div>Loading</div>}
             {isAuth && children}
-        </>
+        </div>
     )
 }
 

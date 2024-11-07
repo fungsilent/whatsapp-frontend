@@ -4,7 +4,7 @@ import MessageInput from './MessageInput'
 
 const ChatSection = () => {
     return (
-        <section>
+        <section className='flex-1 flex flex-col'>
             <Header />
             <Chat />
             <MessageInput />
