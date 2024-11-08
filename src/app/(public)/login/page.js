@@ -8,18 +8,18 @@ import Link from "next/link"
 
 const LoginPage = () => {
     const { setUser } = useAppStore()
-    const [dispatchSignin, user, isLoading, error] = useFetch()
+    const [dispatchSignin, userInfo, isLoading, error] = useFetch()
     const [{ username, password }, setForm] = useState({
         username: "",
         password: "",
     })
 
     useEffect(() => {
-        if (user) {
-            setUser(user)
-            redirect("/")
+        if (userInfo) {
+            setUser(userInfo)
+            redirect('/')
         }
-    }, [user])
+    }, [userInfo])
 
     const doLogin = () => {
         dispatchSignin(() => signin({ username, password }))
