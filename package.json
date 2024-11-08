@@ -15,6 +15,7 @@
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
     "socket.io-client": "^4.8.1",
+    "react-modal": "^3.16.1",
     "swr": "^2.2.5",
     "zustand": "^5.0.1"
   },
