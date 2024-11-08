@@ -3,36 +3,24 @@ import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
 import { useAppStore } from '#root/app/store'
 import { connectWebSocket } from '#root/api/socket'
-import { fetchUserInfo } from '#root/api/user'
-import useFetch from '#root/hooks/useFetch'
+import Loader from '#root/components/Loader'
 
 const PrivateLayout = ({ children }) => {
-    const { isAuth, setUser, setSocket } = useAppStore()
-    const [dispatchFetch, user, isLoading, error] = useFetch({
-        initLoading: true,
-        // log: 'fetchUserInfo',
-    })
+    const { isAuth, setSocket } = useAppStore()
 
     useEffect(() => {
-        dispatchFetch(fetchUserInfo)
         setSocket(connectWebSocket())
     }, [])
 
-    useEffect(() => {
-        if (isLoading) return
-
-        if (user) {
-            setUser(user)
-        } else {
-            redirect('/login')
-        }
-    }, [isLoading])
+    if (!isAuth) {
+        redirect('/login')
+    }
 
     return (
-        <div id='PrivateLayout'>
-            {!isAuth && <div>Loading</div>}
+        <>
+            {!isAuth && <Loader full />}
             {isAuth && children}
-        </div>
+        </>
     )
 }
 

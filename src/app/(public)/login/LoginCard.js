@@ -1,7 +1,3 @@
-
-
 export default LoginCard = () => {
-  return (
-
-  )
+    return ''
 }

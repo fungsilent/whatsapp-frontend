@@ -4,10 +4,15 @@ export const useAppStore = create(set => ({
     user: null,
     isAuth: false,
     socket: null,
-    setUser: user =>
+    setUser: user => {
+        const isAuth = !!user
         set({
-            user: user || null,
-            isAuth: !!user,
-        }),
+            user: isAuth ? user : null,
+            isAuth,
+        })
+        if (!isAuth) {
+            localStorage.removeItem('token')
+        }
+    },
     setSocket: socket => set({ socket }),
 }))
