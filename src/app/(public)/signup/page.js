@@ -1,41 +1,52 @@
-"use client"
-
-import useFetch from "#root/hooks/useFetch"
-import axiosBackend from "#root/utils/axios"
-import Link from "next/link"
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import useFetch from "#root/hooks/useFetch";
+import axiosBackend from "#root/utils/axios";
+import { signup } from "#root/api/user";
+import Link from "next/link";
 
 const Signup = () => {
-    const [dispatchSignup, user, isLoading, error] = useFetch()
+    const router = useRouter();
+    const [form, setForm] = useState({
+        name: "",
+        username: "",
+        password: "",
+        confirmPassword: "",
+    });
+    const [formError, setFormError] = useState("");
+    const [dispatchSignup, data, isLoading, error] = useFetch({
+        log: "signup",
+    });
+
+    useEffect(() => {
+        if (data) {
+            router.push("/");
+        }
+    }, [data]);
 
     const doSignup = () => {
-        const signingup = async ({ username, password }) => {
-            const res = await axiosBackend.post("/user/login", {
-                username,
-                password,
-            })
-            if (!res.ok) {
-                return res
-                const token = generateToken({ id: newUser._id })
-                res.sendSuccess({ token })
-            }
-            const { token, ...user } = res.data
-            localStorage.setItem("token", token)
-            return {
-                ...res,
-                data: user,
-            }
+        if (form.password !== form.confirmPassword) {
+            return setFormError("Confirm password incorrect");
         }
-        dispatchSignup(() => signingup({ username, password }))
-    }
+        dispatchSignup(() => signup(form));
+    };
 
     // 如果撞名彈警告
-    const matchUsername = (e) => {
-        console.log(e.target.value)
-    }
-
-    const matchPassword = () => {
-        // password 同 re-enter 要一樣
-    }
+    const onFormChange = (e) => {
+        const name = e.target.name;
+        let value = e.target.value;
+        if (name === "confirmPassword") {
+            setFormError("");
+        }
+        if (name === "username") {
+            value = value.toLowerCase();
+        }
+        setForm({
+            ...form,
+            [name]: value,
+        });
+    };
 
     return (
         <>
@@ -46,13 +57,26 @@ const Signup = () => {
                     className="rounded-full w-14 h-14 aspect-square bg-slate-600"
                 /> */}
                 <label>
+                    <p> Please enter your display name:</p>
+                    <input
+                        name="name"
+                        type="text"
+                        value={form.name}
+                        onChange={onFormChange}
+                        minLength={4}
+                        maxLength={10}
+                        required
+                    ></input>
+                </label>
+                <label>
                     {/* check username 同 db 有冇已存在/相同 */}
                     {/* Max 10 characters? */}
                     <p> Please enter your username:</p>
                     <input
                         name="username"
                         type="text"
-                        onChange={matchUsername}
+                        value={form.username}
+                        onChange={onFormChange}
                         minLength={4}
                         maxLength={10}
                         required
@@ -63,7 +87,17 @@ const Signup = () => {
                     <input
                         name="password"
                         type="password"
-                        onChange={matchPassword()}
+                        value={form.password}
+                        onChange={onFormChange}
+                    ></input>
+                </label>
+                <label>
+                    <p>Please enter your password:</p>
+                    <input
+                        name="confirmPassword"
+                        type="password"
+                        value={form.confirmPassword}
+                        onChange={onFormChange}
                     ></input>
                 </label>
                 {/* <label> */}
@@ -71,6 +105,11 @@ const Signup = () => {
                 {/* <p>Please re-confirm your password:</p> */}
                 {/* <input></input> */}
                 {/* </label> */}
+                <div>
+                    {formError && <p>{formError}</p>}
+                    {error && <p>{error}</p>}
+                </div>
+
                 <div className="mt-5">
                     <Link
                         href="/"
@@ -87,7 +126,7 @@ const Signup = () => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default Signup
+export default Signup;
