@@ -1,65 +1,67 @@
-import { useReducer } from 'react'
+import { useReducer } from "react";
 
 const STATUS = {
-    IDLE: 'IDLE',
-    LOADING: 'LOADING',
-    SUCCESS: 'SUCCESS',
-    FAIL: 'FAIL',
-}
+    IDLE: "IDLE",
+    LOADING: "LOADING",
+    SUCCESS: "SUCCESS",
+    FAIL: "FAIL",
+};
 
 const reducer = (state, { type, payload }) => {
-    const status = type
+    const status = type;
     switch (type) {
         case STATUS.LOADING: {
             return {
                 ...state,
                 status,
-            }
+            };
         }
         case STATUS.SUCCESS: {
             return {
                 ...state,
                 status,
                 data: payload,
-            }
+            };
         }
         case STATUS.FAIL: {
             return {
                 ...state,
                 status,
                 error: payload,
-            }
+            };
         }
         default: {
-            return state
+            return state;
         }
     }
-}
+};
 
 const useFetch = (options = {}) => {
-    const { initLoading = false, log = '' } = options
+    const { initLoading = false, log = "" } = options;
     const [_state, _dispatch] = useReducer(reducer, {
         status: initLoading ? STATUS.LOADING : STATUS.IDLE,
         data: null,
-        error: '',
-    })
+        error: "",
+    });
 
-    const dispatch = (type, payload) => _dispatch({ type, payload })
+    const dispatch = (type, payload) => _dispatch({ type, payload });
 
-    const dispatchFetch = async fetchFunc => {
+    const dispatchFetch = async (fetchFunc) => {
         try {
-            dispatch(STATUS.LOADING)
-            const { ok, data, error } = await fetchFunc()
+            dispatch(STATUS.LOADING);
+            const { ok, data, error } = await fetchFunc();
             if (ok) {
-                dispatch(STATUS.SUCCESS, data)
+                dispatch(STATUS.SUCCESS, data);
             } else {
-                dispatch(STATUS.FAIL, error)
+                dispatch(STATUS.FAIL, error);
             }
         } catch (err) {
-            console.log(err)
-            dispatch(STATUS.FAIL, 'Unknown error')
+            if (log) {
+                console.log(log, err);
+            }
+            dispatch(STATUS.FAIL, "Unknown error");
         }
-    }
+    };
 
     const state = [
         // data
@@ -67,22 +69,22 @@ const useFetch = (options = {}) => {
         // isLoading
         _state.status === STATUS.LOADING,
         // error
-        _state.status === STATUS.FAIL ? _state.error : '',
-    ]
+        _state.status === STATUS.FAIL ? _state.error : "",
+    ];
 
     if (log) {
         console.log(log, {
             data: state[0],
             isLoading: state[1],
             error: state[2],
-        })
+        });
     }
 
     return [
         // dispatch fetch func
         dispatchFetch,
         ...state,
-    ]
-}
+    ];
+};
 
-export default useFetch
+export default useFetch;
