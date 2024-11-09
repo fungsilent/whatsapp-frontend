@@ -1,6 +1,6 @@
 import axiosBackend from '#root/utils/axios'
 
-export const signin = async ({ username, password }) => {
+export const  signin = async ({ username, password }) => {
     const res = await axiosBackend.post('/user/login', {
         username,
         password,
