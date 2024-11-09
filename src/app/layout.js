@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, Component } from 'react'
+import { useState, useEffect } from 'react'
 import { useAppStore } from '#root/app/store'
 import { fetchUserInfo } from '#root/api/user'
 import useFetch from '#root/hooks/useFetch'
