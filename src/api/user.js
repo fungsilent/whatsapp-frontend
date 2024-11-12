@@ -6,7 +6,7 @@ export const signin = async ({ username, password }) => {
     password,
   });
   if (!res.ok) {
-    return res;
+    return res.data;
   }
   const { token, ...user } = res.data;
   localStorage.setItem("token", token);
