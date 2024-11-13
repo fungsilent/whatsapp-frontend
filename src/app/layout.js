@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { ThemeModeScript } from 'flowbite-react'
 import { useAppStore } from '#root/app/store'
 import { fetchUserInfo } from '#root/api/user'
 import useFetch from '#root/hooks/useFetch'
@@ -30,8 +31,12 @@ const RootLayout = ({ children }) => {
     }, [isLoading])
 
     return (
-        <html>
-            <body className='bg-zinc-900 text-white'>
+        <html suppressHydrationWarning>
+            <head>
+                <ThemeModeScript />
+            </head>
+
+            <body className='bg-zinc-800 text-stone-900 dark:text-stone-200'>
                 {status === STATUS.PENDING && <Loader full />}
                 {status === STATUS.PREPARED && children}
             </body>
