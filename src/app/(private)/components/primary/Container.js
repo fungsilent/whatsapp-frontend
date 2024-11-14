@@ -16,7 +16,8 @@ const Container = () => {
             <Drawer
                 open={primarySection}
                 onClose={onClose}
-                className='absolute right-0 bottom-0 p-0 bg-slate-900'
+                className='absolute p-0 bg-slate-900 w-full h-full'
+                backdrop={false}
             >
                 {primarySection === 'profile' && <Profile />}
             </Drawer>
