@@ -1,14 +1,14 @@
-'use client'
-import { useState, useEffect } from 'react'
-import { useAppStore } from '#root/app/store'
-import { fetchUserInfo } from '#root/api/user'
-import useFetch from '#root/hooks/useFetch'
-import Loader from '#root/components/Loader'
-import '#root/app/globals.css'
+"use client"
+import { useState, useEffect } from "react"
+import { useAppStore } from "#root/app/store"
+import { fetchUserInfo } from "#root/api/user"
+import useFetch from "#root/hooks/useFetch"
+import Loader from "#root/components/Loader"
+import "#root/app/globals.css"
 
 const STATUS = {
-    PENDING: 'PENDING',
-    PREPARED: 'PREPARED',
+    PENDING: "PENDING",
+    PREPARED: "PREPARED",
 }
 
 const RootLayout = ({ children }) => {
@@ -31,7 +31,7 @@ const RootLayout = ({ children }) => {
 
     return (
         <html>
-            <body className='bg-zinc-900 text-white'>
+            <body className="bg-zinc-900 text-white">
                 {status === STATUS.PENDING && <Loader full />}
                 {status === STATUS.PREPARED && children}
             </body>

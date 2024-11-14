@@ -1,39 +1,38 @@
-"use client";
-import classNames from "classnames";
-import Link from "next/link";
-import { useAppStore } from "#root/app/store";
-import ChatSection from "./components/chat/Section";
+"use client"
+import Link from "next/link"
+import { useAppStore } from "#root/app/store"
+import ChatSection from "./components/chat/Section"
+import DrawerComponent from "./components/DrawerComponent"
+import ShowDrawerButton from "./components/ShowDrawerButton"
+import { useState } from "react"
+import { CiLogout } from "react-icons/ci"
 
 const HomePage = () => {
-    const { setUser } = useAppStore();
+    const { setUser } = useAppStore()
 
     const Logout = () => {
-        setUser(null);
-    };
+        setUser(null)
+    }
+
+    const [isOpen, setIsOpen] = useState(false)
+
+    const handleOpen = () => setIsOpen(true)
+    const handleClose = () => setIsOpen(false)
 
     return (
         <div className="flex justify-center items-center h-[100vh] p-6">
             <div className="flex h-full w-full">
-                <ul className="flex flex-col gap-4 p-4 bg-slate-800">
-                    {/* {[...Array(4)].map((item, index) => (
-                    <li
-                        key={index}
-                        className={classNames([
-                            'rounded-full w-10 aspect-square bg-slate-600',
-                            { 'mt-auto': index === 3 },
-                        ])}
-                    ></li>
-                ))} */}
-                    <button // fd list
-                        className="rounded-full w-10 aspect-square bg-slate-600 mt-auto cursor-pointer"
-                        onClick={() => Logout()}
-                    ></button>
+                <div className="flex flex-col gap-4 p-4 bg-slate-800">
+                    <ShowDrawerButton onClick={handleOpen} />
                     <button
                         className="rounded-full w-10 aspect-square bg-slate-600 mt-auto cursor-pointer"
                         onClick={() => Logout()}
-                    ></button>
-                </ul>
+                    >
+                        <CiLogout className="h-6 w-6" />
+                    </button>
+                </div>
                 <div className="flex flex-col gap-4 w-[400px] bg-slate-900">
+                    <DrawerComponent open={isOpen} onClose={handleClose} />
                     <p className="px-4 py-2 text-xl">對話</p>
                     <div className="px-4">
                         <input className="w-full rounded px-3 py-1 bg-slate-600 outline-none" />
@@ -66,7 +65,7 @@ const HomePage = () => {
             </div>
             <Link href="/test">test</Link>
         </div>
-    );
-};
+    )
+}
 
-export default HomePage;
+export default HomePage
