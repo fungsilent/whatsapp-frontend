@@ -6,11 +6,11 @@ import Info from './Info'
 import Chat from './Chat'
 import MessageInput from './MessageInput'
 
-const roomId = '67335bea38ed19eafa61626f'
+const roomId = '673103eb3b986f7e172747b9'
 
 const ChatSection = () => {
     // const { socket, roomId } = useAppStore()
-    const [dispatchInfo, info, isLoading, error] = useFetch()
+    const [dispatchInfo, info, isLoading, error] = useFetch({ log: 'info' })
     const roomInfo = info ?? {}
 
     useEffect(() => {
@@ -20,8 +20,11 @@ const ChatSection = () => {
     return (
         <section className='flex-1 flex flex-col'>
             <Info {...roomInfo} />
-            <Chat />
-            <MessageInput />
+            <Chat roomId={roomId} />
+            <MessageInput
+                roomId={roomId}
+                {...roomInfo}
+            />
         </section>
     )
 }
