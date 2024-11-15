@@ -1,6 +1,6 @@
 const MessageInput = () => {
     return (
-        <div className='flex gap-4 py-2 px-3 bg-slate-800'>
+        <div className='flex gap-4 py-2 px-3 z-20 bg-slate-800'>
             {[...Array(2)].map((item, index) => (
                 <i
                     key={index}

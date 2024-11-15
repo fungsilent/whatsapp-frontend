@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import moment from 'moment'
 import { Avatar } from 'flowbite-react'
 import { useAppStore } from '#root/app/store'
@@ -7,7 +7,7 @@ import { fetchRoomMessage } from '#root/api/room'
 
 const Chat = ({ roomId }) => {
     const [dataset, setDataset] = useState([])
-    const [dispatchMessage, messages, isLoading, error] = useFetch({ log: 'fetchRoomMessage' })
+    const [dispatchMessage, messages, isLoading, error] = useFetch({})
     const [{ page, perPage }, setSearch] = useState({
         page: 1,
         perPage: 10,
@@ -23,57 +23,59 @@ const Chat = ({ roomId }) => {
     }, [roomId, page])
 
     useEffect(() => {
-        console.log('diff', messages)
         if (!messages) return
-
-        // const newDataset = messages.reduce((set, message) => {
-        //     const date = moment(message.date).local()
-
-        //     dateFlag = date.format('DD/MM/YYYY') === dateFlag ? dateFlag :
-        //     set[key] = set[key] || []
-        //     set[key].push({
-        //         ...message,
-        //         time: date.format('HH:mm'),
-        //     })
-        //     return set
-        // }, [])
-        setDataset([...dataset, ...messages])
+        setDataset([...dataset, messages[0], ...messages, ...messages, ...messages, ...messages])
     }, [isLoading])
 
     return (
-        <div className='flex-1 bg-slate-950 relative overflow-y-auto'>
-            <i
-                className='absolute w-full h-full left-0 top-0'
-                style={{
-                    backgroundRepeat: true,
-                    backgroundImage: 'url("https://static.whatsapp.net/rsrc.php/v3/yl/r/gi_DckOUM5a.png")',
-                    opacity: 0.1,
-                }}
-            />
-            {dataset.map((message, index) => (
-                <Message
-                    key={index}
-                    {...message}
-                />
-            ))}
+        <div className='flex-1 flex flex-col gap-2 w-full h-full z-20 overflow-y-auto'>
+            {dataset.map((message, index) => {
+                const prevMessage = dataset[index - 1]
+
+                // date
+                const currDate = moment(message.date).format('DD/MM/YYYY')
+                const prevDate = prevMessage ? moment(prevMessage.date).format('DD/MM/YYYY') : null
+
+                // user
+                const prevUser = prevMessage?.user.id
+                const currUser = message.user.id
+                return (
+                    <Fragment key={index}>
+                        {currDate !== prevDate && <div>{currDate}</div>}
+                        <Message
+                            {...message}
+                            showUser={prevUser !== currUser}
+                        />
+                    </Fragment>
+                )
+            })}
         </div>
     )
 }
 
 const Message = props => {
-    // console.log('props', props)
-    // const { content, time } = props
+    console.log('props', props)
+    const { showUser, user, content, date } = props
+
     return (
-        <div>
-            <Avatar
-                rounded
-                size='md'
-                className='mr-auto justify-start'
-            >
-                <div className='space-y-1 font-medium'>
-                    <span>{props.content}</span>
-                </div>
-            </Avatar>
+        <div className='flex gap-2 z-20'>
+            <i className='w-8 h-8'>
+                {showUser && (
+                    <Avatar
+                        rounded
+                        size='sm'
+                        className='mr-auto justify-start'
+                    />
+                )}
+            </i>
+            <div className='flex flex-col bg-sky-200 dark:bg-slate-700  p-2 rounded'>
+                <p className='flex gap-2 text-sm'>
+                    <span className='text-sky-950 dark:text-sky-400'>{user.name}</span>
+                    <span className='text-gray-600 dark:text-stone-400'>{user.username}</span>
+                </p>
+                <p>{content}</p>
+                <p className='self-end text-xs text-gray-600 dark:text-gray-400'>{moment(date).format('HH:mm')}</p>
+            </div>
         </div>
     )
 }

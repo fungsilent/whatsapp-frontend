@@ -9,7 +9,7 @@ const Info = ({ type, name }) => {
     }
 
     return (
-        <div className='flex gap-4 items-center px-4 py-2 bg-stone-200 dark:bg-slate-800'>
+        <div className='flex gap-4 items-center px-4 py-2 z-20 bg-stone-200 dark:bg-slate-800'>
             <Avatar
                 rounded
                 size='md'
