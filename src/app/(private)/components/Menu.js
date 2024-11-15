@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { useThemeMode } from 'flowbite-react'
 import { useAppStore } from '#root/app/store'
 
@@ -62,7 +62,7 @@ const MenuButton = ({ className, children, ...props }) => {
     return (
         <button
             type='button'
-            className={classNames(
+            className={clsx(
                 'flex justify-center items-center rounded-full w-10 aspect-square bg-slate-600 cursor-pointer',
                 className
             )}

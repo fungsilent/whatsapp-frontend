@@ -6,7 +6,8 @@ import Info from './Info'
 import Chat from './Chat'
 import MessageInput from './MessageInput'
 
-const roomId = '673103eb3b986f7e172747b9'
+// const roomId = '673103eb3b986f7e172747b9'
+const roomId = '6730b47ec44aa875cb0e7aa1'
 
 const ChatSection = () => {
     // const { socket, roomId } = useAppStore()
@@ -18,7 +19,7 @@ const ChatSection = () => {
     }, [])
 
     return (
-        <section className='flex-1 flex flex-col relative bg-sky-100 dark:bg-slate-950 '>
+        <section className='flex-1 flex flex-col relative bg-blue-200 dark:bg-slate-950 '>
             <i
                 className='absolute left-0 top-0 w-full h-full opacity-20 z-10 '
                 style={{

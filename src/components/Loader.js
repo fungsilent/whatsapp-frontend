@@ -1,13 +1,13 @@
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 const Loader = ({ full = false }) => {
     return (
         <div
-            className={classNames({
+            className={clsx({
                 'flex justify-center items-center max-w-[800px] w-full h-[100vh] p-10 m-auto': full,
             })}
         >
-            <div className={classNames('loader w-full')}></div>
+            <div className={clsx('loader w-full')}></div>
         </div>
     )
 }

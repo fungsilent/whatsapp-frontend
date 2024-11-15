@@ -31,7 +31,10 @@ const RootLayout = ({ children }) => {
     }, [isLoading])
 
     return (
-        <html suppressHydrationWarning>
+        <html
+            suppressHydrationWarning
+            className='dark'
+        >
             <head>
                 <ThemeModeScript />
             </head>
