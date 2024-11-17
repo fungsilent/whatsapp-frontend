@@ -1,24 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
+import TextField, { useText } from '#root/components/TextField'
 import useFetch from '#root/hooks/useFetch'
+import { useChatStore } from './store'
 import { sendRoomMessage } from '#root/api/room'
 
 const MessageInput = ({ roomId }) => {
-    const [message, setMessage] = useState('')
+    const { info } = useChatStore()
+    const [message, setMessage] = useText('', 300)
     const [dispatchSend, isSent, isLoading, error] = useFetch()
 
-    const onChange = event => {
-        setMessage(event.target.value)
-    }
-
     const onEnter = () => {
-        dispatchSend(() => sendRoomMessage(roomId, { message }))
+        if (message) {
+            dispatchSend(() => sendRoomMessage(roomId, { message }))
+        }
     }
 
     useEffect(() => {
-        if (!!isSent) {
+        if (isSent) {
             setMessage('')
         }
-    }, [!!isSent])
+    }, [isSent])
 
     return (
         <div className='flex gap-4 py-2 px-3 z-20 bg-stone-200 dark:bg-slate-800'>
@@ -28,14 +29,13 @@ const MessageInput = ({ roomId }) => {
                     className='rounded-full w-10 h-10 aspect-square bg-slate-600 cursor-pointer'
                 />
             ))} */}
-            <input
-                className='w-full rounded px-3 py-1 bg-slate-100 dark:bg-slate-600 placeholder-gray-400 outline-none'
-                placeholder='Type a message'
+            <TextField
+                className='bg-white dark:bg-slate-600'
+                placeholder={info.isDisable ? 'Chat closed' : 'Type a message'}
                 value={message}
-                onChange={onChange}
-                onKeyDown={event => {
-                    if (event.key === 'Enter') onEnter()
-                }}
+                onChange={value => setMessage(value)}
+                onEnter={onEnter}
+                disabled={info.isDisable}
             />
         </div>
     )

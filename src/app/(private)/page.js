@@ -1,10 +1,8 @@
 'use client'
-import clsx from 'clsx'
-import Link from 'next/link'
 import { useAppStore } from '#root/app/store'
 import Menu from './components/Menu'
 import Primary from './components/primary/Container'
-import ChatSection from './components/chat/Section'
+import Chat from './components/chat/Container'
 
 const HomePage = () => {
     const {} = useAppStore()
@@ -14,7 +12,7 @@ const HomePage = () => {
             <div className='flex h-full w-full'>
                 <Menu />
                 <Primary />
-                <ChatSection />
+                <Chat />
             </div>
         </div>
     )

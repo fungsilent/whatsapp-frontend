@@ -14,7 +14,11 @@ export const fetchRoomMessage = async (roomId, { page, perPage }) => {
 }
 
 export const sendRoomMessage = async (roomId, { message }) => {
-    return await axiosBackend.post(`/room/${roomId}/message/add`, {
+    const res = await axiosBackend.post(`/room/${roomId}/message/add`, {
         message,
     })
+    if (res.data) {
+        res.data = !!res.data
+    }
+    return res
 }
