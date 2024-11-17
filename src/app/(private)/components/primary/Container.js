@@ -1,7 +1,9 @@
 import { Drawer } from 'flowbite-react'
 import { useAppStore } from '#root/app/store'
-import FriendList from './FriendList'
+import Roomlist from './roomlist/Roomlist'
 import Profile from './Profile'
+import NewFriend from './addfriend'
+import Group from './addGroup'
 
 const Container = () => {
     const { primarySection, showSection } = useAppStore()
@@ -12,7 +14,7 @@ const Container = () => {
 
     return (
         <div className='relative w-[400px] overflow-hidden'>
-            <FriendList />
+            <Roomlist />
             <Drawer
                 open={primarySection}
                 onClose={onClose}
@@ -20,6 +22,8 @@ const Container = () => {
                 backdrop={false}
             >
                 {primarySection === 'profile' && <Profile />}
+                {primarySection === 'add_friend' && <NewFriend />}
+                {primarySection === 'add_group' && <Group />}
             </Drawer>
         </div>
     )

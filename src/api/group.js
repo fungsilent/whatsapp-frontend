@@ -1,8 +1,8 @@
 import axiosBackend from '#root/utils/axios'
 
-export const createGroup = async () => {
+export const createGroup = async name => {
     return await axiosBackend.post('/group/create', {
-        username,
+        name,
     })
 }
 
