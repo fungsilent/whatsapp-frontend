@@ -1,5 +1,5 @@
 'use client'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import Link from 'next/link'
 import { useAppStore } from '#root/app/store'
 import Menu from './components/Menu'
@@ -10,7 +10,7 @@ const HomePage = () => {
     const {} = useAppStore()
 
     return (
-        <div className='flex justify-center items-center h-[100vh] p-6'>
+        <div className='flex justify-center items-center w-full max-w-[1600px] h-[100vh] m-auto p-6'>
             <div className='flex h-full w-full'>
                 <Menu />
                 <Primary />
