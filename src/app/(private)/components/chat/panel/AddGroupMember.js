@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
 import clsx from 'clsx'
-import { Avatar, Spinner, Popover, Modal } from 'flowbite-react'
+import { Avatar, Spinner, Popover } from 'flowbite-react'
 import TextField, { useText } from '#root/components/TextField'
 import Name from '#root/components/Name'
 import useFetch from '#root/hooks/useFetch'
-import { searchUser } from '#root/api/friend'
-import { addMember } from '#root/api/group'
+import { searchUser, addMember } from '#root/api/chat'
 
 const AddGroupMember = ({ roomId }) => {
     const [search, setSearch, debounceSearch] = useText('', 300)
@@ -13,25 +12,9 @@ const AddGroupMember = ({ roomId }) => {
 
     useEffect(() => {
         if (debounceSearch) {
-            dispatchSearch(() => searchUser(search))
+            dispatchSearch(() => searchUser(debounceSearch))
         }
     }, [debounceSearch])
-
-    const renderList = () => {
-        if (!users) {
-            return null
-        }
-        if (!users.length) {
-            return <p className='py-6 text-sm text-center'>No user found</p>
-        }
-        return users.map((user, index) => (
-            <AddMember
-                key={index}
-                roomId={roomId}
-                {...user}
-            />
-        ))
-    }
 
     return (
         <>
@@ -43,8 +26,25 @@ const AddGroupMember = ({ roomId }) => {
                 />
             </div>
             <div className='flex-1 bg-white dark:bg-slate-900 overflow-y-auto'>
-                {!search && <p className='py-6 text-sm text-center'>Add member</p>}
-                {search && renderList()}
+                {!debounceSearch && <p className='py-6 text-sm text-center'>Add member</p>}
+                {isLoading && (
+                    <div className='py-6 text-center'>
+                        <Spinner />
+                    </div>
+                )}
+                {debounceSearch && !isLoading && !users?.length && (
+                    <p className='py-6 text-sm text-center'>No user found</p>
+                )}
+                {debounceSearch &&
+                    !isLoading &&
+                    !!users?.length &&
+                    users.map((user, index) => (
+                        <AddMember
+                            key={index}
+                            roomId={roomId}
+                            {...user}
+                        />
+                    ))}
             </div>
         </>
     )

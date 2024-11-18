@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react'
 import moment from 'moment'
 import TextField, { useText } from '#root/components/TextField'
 import Name from '#root/components/Name'
-import { useChatStore } from '../store'
+import { useAppStore } from '#root/app/store'
 
 const SearchMessage = () => {
-    const { info, messages } = useChatStore()
+    const { info, messages } = useAppStore()
     const [search, setSearch, debounceSearch] = useText('', 300)
     const [list, setList] = useState([])
 
     useEffect(() => {
         if (debounceSearch) {
-            const result = messages.filter(message => message.content.includes(debounceSearch))
-            setList(result)
+            const newList = messages.filter(message => message.content.includes(debounceSearch))
+            setList(newList)
         }
     }, [debounceSearch])
 
