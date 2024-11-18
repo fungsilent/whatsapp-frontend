@@ -11,8 +11,8 @@ const SearchMessage = () => {
 
     useEffect(() => {
         if (debounceSearch) {
-            const result = messages.filter(message => message.content.includes(debounceSearch))
-            setList(result)
+            const newList = messages.filter(message => message.content.includes(debounceSearch))
+            setList(newList)
         }
     }, [debounceSearch])
 

@@ -1,10 +1,11 @@
 import moment from 'moment'
 import { Avatar, Spinner, Popover } from 'flowbite-react'
 import Name from '#root/components/Name'
+import DeleteConfrim, { useDelete } from '#root/components/DeleteConfrim'
 import useFetch from '#root/hooks/useFetch'
 import { useAppStore } from '#root/app/store'
-import { removeFriend } from '#root/api/friend'
-import { removeMember } from '#root/api/group'
+import { removeRoom } from '#root/api/room'
+import { removeMember } from '#root/api/chat'
 
 const RoomDetail = ({ roomId }) => {
     const { user, info } = useAppStore()
@@ -16,7 +17,7 @@ const RoomDetail = ({ roomId }) => {
                     <BasicInfo>
                         <Name type='name'>{info.name}</Name> <Name type='username'>{info.username}</Name>
                     </BasicInfo>
-                    <RemoveFriend
+                    <RemoveRoom
                         roomId={roomId}
                         type={info.type}
                     />
@@ -56,7 +57,7 @@ const RoomDetail = ({ roomId }) => {
                         ))}
                     </div>
 
-                    <RemoveFriend
+                    <RemoveRoom
                         roomId={roomId}
                         type={info.type}
                     />
@@ -79,14 +80,16 @@ const BasicInfo = ({ children }) => {
     )
 }
 
-const RemoveFriend = ({ roomId, type }) => {
+const RemoveRoom = ({ roomId, type }) => {
     const [dispatchRemove, isRemoved, isLoading, error] = useFetch()
+    const { onOpen, ...removeConfrimProps } = useDelete()
 
-    const onRemove = () => {
+    const onConfirm = () => {
         if (isLoading) return
-        dispatchRemove(() => removeFriend(roomId))
+        dispatchRemove(() => removeRoom(roomId))
     }
 
+    /* render */
     const renderIcon = () => {
         if (type === 'friend') {
             return (
@@ -121,14 +124,16 @@ const RemoveFriend = ({ roomId, type }) => {
         }
     }
 
+    const label = type === 'friend' ? 'Remove chat' : 'Exit group'
+
     return (
         <div className='flex-1 flex flex-col gap-3 p-3 mb-3 bg-white dark:bg-slate-900'>
             <div
                 className='flex gap-3 items-center cursor-pointer'
-                onClick={onRemove}
+                onClick={onOpen}
             >
                 {renderIcon()}
-                <span className='text-rose-600'>{type === 'friend' ? 'Remove Chat' : 'Exit group'}</span>
+                <span className='text-rose-600'>{label}</span>
                 <span className='ml-auto'>
                     {isLoading && <Spinner />}
                     {error && (
@@ -152,6 +157,11 @@ const RemoveFriend = ({ roomId, type }) => {
                     )}
                 </span>
             </div>
+            <DeleteConfrim
+                {...removeConfrimProps}
+                text={`Are you sure you want to ${label.toLowerCase()}?`}
+                onConfirm={onConfirm}
+            />
         </div>
     )
 }

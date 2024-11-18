@@ -19,7 +19,7 @@ const Info = ({ info, setPanel }) => {
             >
                 <div className='space-y-1'>
                     <div>{info.name}</div>
-                    <div className='text-sm text-gray-500 dark:text-gray-400 truncate '>{getSubTitle()}</div>
+                    <div className='text-sm text-gray-500 dark:text-gray-400 truncate'>{getSubTitle()}</div>
                 </div>
             </Avatar>
 
