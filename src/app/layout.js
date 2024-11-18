@@ -31,12 +31,15 @@ const RootLayout = ({ children }) => {
     }, [isLoading])
 
     return (
-        <html suppressHydrationWarning>
+        <html
+            suppressHydrationWarning
+            className='dark'
+        >
             <head>
                 <ThemeModeScript />
             </head>
 
-            <body className='bg-zinc-800 text-stone-900 dark:text-stone-200'>
+            <body className='bg-zinc-800 text-stone-800 dark:text-stone-200'>
                 {status === STATUS.PENDING && <Loader full />}
                 {status === STATUS.PREPARED && children}
             </body>
