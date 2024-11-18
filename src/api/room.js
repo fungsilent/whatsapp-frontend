@@ -1,5 +1,17 @@
 import axiosBackend from '#root/utils/axios'
 
+export const fetchRooms = async () => {
+    return await axiosBackend.get('/room/list')
+}
+
+export const removeRoom = async roomId => {
+    return await axiosBackend.delete('/room/remove', {
+        data: {
+            roomId,
+        },
+    })
+}
+
 export const fetchRoomInfo = async roomId => {
     return await axiosBackend.get(`/room/${roomId}`)
 }

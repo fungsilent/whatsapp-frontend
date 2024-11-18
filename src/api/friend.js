@@ -11,21 +11,20 @@ export const addFriend = async ({ username }) => {
 }
 
 export const fetchFriends = async () => {
-    return await axiosBackend.get('/friend/list')
+    return await axiosBackend.get('/chat/list')
 }
 
 export const searchUser = async username => {
-    console.log(username)
     return await axiosBackend.get(`/friend/search/${username}`)
 }
 
 export const removeFriend = async roomId => {
-    return await axiosBackend.delete('friend/remove', {
+    return await axiosBackend.delete('/room/remove', {
         data: {
             roomId,
         },
     })
 }
 export const chatlist = async () => {
-    return await axiosBackend.get('/friend/list')
+    return await axiosBackend.get('/chat/list')
 }

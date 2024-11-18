@@ -7,58 +7,57 @@ import Name from '#root/components/Name'
 import { useAppStore } from '#root/app/store'
 import useSocket from '#root/hooks/useSocket'
 import useFetch from '#root/hooks/useFetch'
-import { fetchFriends, removeFriend } from '#root/api/friend'
+import { fetchRooms, removeRoom } from '#root/api/room'
 
-const FriendList = () => {
+const RoomList = () => {
     const [search, setSearch, debounceSearch] = useText('', 300)
     const [list, setList] = useState([])
-    const [dispatchFriend, friends, isLoading, error] = useFetch()
+    const [dispatchRoom, rooms, isLoading, error] = useFetch()
     const [enableRemove, setEnableRemove] = useState(false)
 
     useEffect(() => {
-        dispatchFriend(fetchFriends)
+        dispatchRoom(fetchRooms)
     }, [])
 
     useEffect(() => {
-        if (!friends) return
-        setList(friends)
-    }, [friends])
+        if (!rooms) return
+        setList(rooms)
+    }, [rooms])
 
     useEffect(() => {
-        if (!friends) return
-        const result = friends.filter(friend => friend.name.includes(debounceSearch))
-        setList(result)
+        if (!rooms) return
+        setList(rooms.filter(room => room.name.includes(debounceSearch)))
     }, [debounceSearch])
 
-    // update friend list
+    // add new room to list
     useSocket(
-        (socket, { REMOVE_FRIEND, DISABLE_FRIEND }) => {
-            const removeFriendHandler = ({ roomId: removedRoomId }) => {
-                setList(list.filter(friend => friend.roomId !== removedRoomId))
+        (socket, { NEW_ROOM }) => {
+            const addNewRoom = newRoom => {
+                setList([newRoom, ...list])
             }
-            socket.on(REMOVE_FRIEND, removeFriendHandler)
-
-            const disableFriendHandler = ({ roomId: disabledRoomId }) => {
-                setList(
-                    updateFriend(list, disabledRoomId, {
-                        isDisable: true,
-                    })
-                )
-            }
-            socket.on(DISABLE_FRIEND, disableFriendHandler)
-
-            return () => {
-                socket.off(REMOVE_FRIEND, removeFriendHandler)
-                socket.off(DISABLE_FRIEND, disableFriendHandler)
-            }
+            socket.on(NEW_ROOM, addNewRoom)
+            return () => socket.off(NEW_ROOM, addNewRoom)
         },
         [list]
     )
 
-    // update last message
+    // delete room from list
     useSocket(
-        (socket, { NEW_ROOM_MESSAGE }) => {
-            const handler = ({ type, room, user, content, date }) => {
+        (socket, { REMOVE_ROOM }) => {
+            const removeRoom = ({ roomId: removedRoomId }) => {
+                setList(list.filter(room => room.roomId !== removedRoomId))
+            }
+            socket.on(REMOVE_ROOM, removeRoom)
+            return () => socket.off(REMOVE_ROOM, removeRoom)
+        },
+        [list]
+    )
+
+    // modify room data in list
+    useSocket(
+        (socket, { NEW_ROOM_MESSAGE, DISABLE_ROOM }) => {
+            // update room last message
+            const updateLastMessage = ({ type, room, user, content, date }) => {
                 setList(
                     updateFriend(list, room.id, {
                         lastMessage: {
@@ -70,8 +69,22 @@ const FriendList = () => {
                     })
                 )
             }
-            socket.on(NEW_ROOM_MESSAGE, handler)
-            return () => socket.off(NEW_ROOM_MESSAGE, handler)
+            socket.on(NEW_ROOM_MESSAGE, updateLastMessage)
+
+            // update room disabled
+            const updateDisabled = ({ roomId: disabledRoomId }) => {
+                setList(
+                    updateFriend(list, disabledRoomId, {
+                        isDisable: true,
+                    })
+                )
+            }
+            socket.on(DISABLE_ROOM, updateDisabled)
+
+            return () => {
+                socket.off(NEW_ROOM_MESSAGE, updateLastMessage)
+                socket.off(DISABLE_ROOM, updateDisabled)
+            }
         },
         [list]
     )
@@ -109,16 +122,16 @@ const FriendList = () => {
                 />
             </div>
             {isLoading && (
-                <span className='py-6 mx-auto'>
+                <div className='py-6 text-center'>
                     <Spinner />
-                </span>
+                </div>
             )}
-            {!isLoading && list.length && (
+            {!isLoading && !!list.length && (
                 <ul className='flex flex-col overflow-y-auto'>
-                    {list.map((friend, index) => (
-                        <Friend
+                    {list.map((room, index) => (
+                        <Chat
                             key={index}
-                            {...friend}
+                            {...room}
                             enableRemove={enableRemove}
                         />
                     ))}
@@ -129,13 +142,13 @@ const FriendList = () => {
     )
 }
 
-const Friend = ({ roomId, name, lastMessage, isDisable, enableRemove }) => {
+const Chat = ({ roomId, name, lastMessage, isDisable, enableRemove }) => {
     const { setRoom } = useAppStore()
     const [dispatchRemove, isRemoved, isLoading, error] = useFetch()
     const { onOpen, ...removeConfrimProps } = useDelete({
         text: `Are you sure you want to delete ${name}?`,
         onConfirm: () => {
-            dispatchRemove(() => removeFriend(roomId))
+            dispatchRemove(() => removeRoom(roomId))
         },
     })
 
@@ -236,7 +249,7 @@ const Friend = ({ roomId, name, lastMessage, isDisable, enableRemove }) => {
  * Helper
  */
 const updateFriend = (list, roomId, data) => {
-    const idnex = list.findIndex(friend => friend.roomId === roomId)
+    const idnex = list.findIndex(room => room.roomId === roomId)
     if (idnex === -1) return list
 
     const updatedFriend = {
@@ -247,4 +260,4 @@ const updateFriend = (list, roomId, data) => {
     return [updatedFriend, ...list]
 }
 
-export default FriendList
+export default RoomList

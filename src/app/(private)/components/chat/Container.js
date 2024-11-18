@@ -15,8 +15,6 @@ const ChatContainer = () => {
     const { roomId, info, panel, setInfo, setPanel, resetRoom } = useAppStore()
     const [dispatchInfo, roomInfo, isLoading, error] = useFetch()
 
-    console.log(info, roomInfo)
-
     /* fetch data */
     useEffect(() => {
         if (!roomId) return
@@ -29,25 +27,27 @@ const ChatContainer = () => {
     }, [isLoading])
 
     /* socket */
-    useSocket((socket, { REFRESH_ROOM_INFO }) => {
-        socket.on(REFRESH_ROOM_INFO, ({ isRemoved, ...info }) => {
-            if (isRemoved) {
-                resetRoom()
-            } else {
+    useSocket(
+        (socket, { REFRESH_ROOM_INFO }) => {
+            const refreshRoomInfo = ({ roomId: refreshRoomId, ...info }) => {
+                if (refreshRoomId !== roomId) return
                 setInfo(info)
             }
-        })
-    })
+            socket.on(REFRESH_ROOM_INFO, refreshRoomInfo)
+            return () => socket.off(REFRESH_ROOM_INFO, refreshRoomInfo)
+        },
+        [roomId]
+    )
 
     useSocket(
-        (socket, { REMOVE_FRIEND }) => {
-            const handler = ({ roomId: removedRoomId }) => {
+        (socket, { REMOVE_ROOM }) => {
+            const removeRoom = ({ roomId: removedRoomId }) => {
                 if (roomId === removedRoomId) {
                     resetRoom()
                 }
             }
-            socket.on(REMOVE_FRIEND, handler)
-            return () => socket.off(REMOVE_FRIEND, handler)
+            socket.on(REMOVE_ROOM, removeRoom)
+            return () => socket.off(REMOVE_ROOM, removeRoom)
         },
         [roomId]
     )
