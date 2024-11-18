@@ -3,10 +3,10 @@ import { addFriend, searchUser } from "#root/api/friend";
 import useFetch from "#root/hooks/useFetch";
 import { useState } from "react";
 
-function newFriend() {
-  const [newUsername, setNewUsername] = useState("");
+function NewFriend() {
   const [userlist, setUserlist] = useState([]);
   const [dispatchAdd, user, isLoading, error] = useFetch();
+  const [newUsername, setNewUsername] = useState("");
 
   const handleChange = (event) => {
     setNewUsername(event.target.value);
@@ -40,9 +40,10 @@ function newFriend() {
             </div>
           </div>
         ))}
+        <div>{error ? error : ""} </div>
       </div>
     </div>
   );
 }
 
-export default newFriend;
+export default NewFriend;

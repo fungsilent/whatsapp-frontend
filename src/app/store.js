@@ -4,7 +4,12 @@ export const useAppStore = create(set => ({
     user: null,
     isAuth: false,
     socket: null,
+<<<<<<< HEAD
     primarySection: 'profile',
+=======
+    primarySection: '',
+    roomId: '',
+>>>>>>> origin/fung
 
     setUser: user => {
         const isAuth = !!user
@@ -18,4 +23,5 @@ export const useAppStore = create(set => ({
     },
     setSocket: socket => set({ socket }),
     showSection: section => set({ primarySection: section }),
+    setRoom: roomId => set({ roomId }),
 }))

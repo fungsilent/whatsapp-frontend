@@ -1,15 +1,15 @@
-"use client"
-import { useState, useEffect } from "react"
-import { ThemeModeScript } from "flowbite-react"
-import { useAppStore } from "#root/app/store"
-import { fetchUserInfo } from "#root/api/user"
-import useFetch from "#root/hooks/useFetch"
-import Loader from "#root/components/Loader"
-import "#root/app/globals.css"
+'use client'
+import { useState, useEffect } from 'react'
+import { ThemeModeScript } from 'flowbite-react'
+import { useAppStore } from '#root/app/store'
+import { fetchUserInfo } from '#root/api/user'
+import useFetch from '#root/hooks/useFetch'
+import Loader from '#root/components/Loader'
+import '#root/app/globals.css'
 
 const STATUS = {
-    PENDING: "PENDING",
-    PREPARED: "PREPARED",
+    PENDING: 'PENDING',
+    PREPARED: 'PREPARED',
 }
 
 const RootLayout = ({ children }) => {
@@ -31,12 +31,15 @@ const RootLayout = ({ children }) => {
     }, [isLoading])
 
     return (
-        <html suppressHydrationWarning>
+        <html
+            suppressHydrationWarning
+            className='dark'
+        >
             <head>
                 <ThemeModeScript />
             </head>
 
-            <body className="bg-zinc-800 text-stone-900 dark:text-stone-200">
+            <body className='bg-zinc-800 text-stone-800 dark:text-stone-200'>
                 {status === STATUS.PENDING && <Loader full />}
                 {status === STATUS.PREPARED && children}
             </body>
