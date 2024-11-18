@@ -1,11 +1,9 @@
 import { useEffect } from 'react'
 import TextField, { useText } from '#root/components/TextField'
 import useFetch from '#root/hooks/useFetch'
-import { useChatStore } from './store'
 import { sendRoomMessage } from '#root/api/room'
 
-const MessageInput = ({ roomId }) => {
-    const { info } = useChatStore()
+const MessageInput = ({ roomId, info }) => {
     const [message, setMessage] = useText('', 300)
     const [dispatchSend, isSent, isLoading, error] = useFetch()
 

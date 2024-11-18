@@ -6,11 +6,11 @@ import { Avatar } from 'flowbite-react'
 import Name from '#root/components/Name'
 import useFetch from '#root/hooks/useFetch'
 import useSocket from '#root/hooks/useSocket'
-import { useChatStore } from './store'
+import { useAppStore } from '#root/app/store'
 import { fetchRoomMessage } from '#root/api/room'
 
 const Chat = ({ roomId }) => {
-    const { messages, setMessages, addMessages } = useChatStore()
+    const { messages, setMessages, addMessages } = useAppStore()
     const [dispatchMessage, newMessages, isLoading, error] = useFetch()
     /*
      * TODO: don't fetch all in once, paging is must, but not today :(
