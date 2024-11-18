@@ -30,7 +30,7 @@ const PanelContainer = ({ roomId, width, panel, setPanel }) => {
         >
             <div className='flex gap-4 items-center px-4 py-2 bg-white dark:bg-slate-900'>
                 <svg
-                    className='w-6 h-12 text-gray-800 dark:text-white cursor-pointer'
+                    className='shrink-0 w-6 h-12 text-gray-800 dark:text-white cursor-pointer'
                     aria-hidden='true'
                     fill='none'
                     viewBox='0 0 24 24'

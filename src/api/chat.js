@@ -1,5 +1,17 @@
 import axiosBackend from '#root/utils/axios'
 
+/* friend */
+export const searchUser = async username => {
+    return await axiosBackend.get(`/friend/search/${username}`)
+}
+
+export const addFriend = async ({ username }) => {
+    return await axiosBackend.post('/friend/add', {
+        username,
+    })
+}
+
+/* group */
 export const createGroup = async name => {
     return await axiosBackend.post('/group/create', {
         name,

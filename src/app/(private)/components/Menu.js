@@ -1,25 +1,23 @@
 import clsx from 'clsx'
-import { useThemeMode } from 'flowbite-react'
+import { useThemeMode, Avatar } from 'flowbite-react'
 import { useAppStore } from '#root/app/store'
 
 const Menu = () => {
-    const { setUser, showSection } = useAppStore()
+    const { setUser, showSection, resetRoom } = useAppStore()
     const { mode, toggleMode } = useThemeMode()
 
-    const logout = () => {
+    const onLogout = () => {
         setUser(null)
+        resetRoom()
+        showSection(null)
     }
 
     return (
-        <nav className='flex flex-col gap-4 p-4 bg-slate-200 dark:bg-slate-800'>
+        <nav className='flex flex-col gap-4 p-4 bg-stone-200 dark:bg-slate-800'>
             <MenuButton onClick={() => showSection(null)}>
                 <svg
-                    className='w-6 h-6 text-slate-800 dark:text-white'
-                    aria-hidden='true'
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    fill='none'
+                    className='w-6 h-6 text-gray-600 dark:text-white'
+                    fill='currentColor'
                     viewBox='0 0 24 24'
                 >
                     <path
@@ -33,12 +31,8 @@ const Menu = () => {
             </MenuButton>
             <MenuButton onClick={() => showSection('add_friend')}>
                 <svg
-                    className='w-6 h-6 text-slate-800 dark:text-white'
-                    aria-hidden='true'
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    fill='none'
+                    className='w-6 h-6 text-gray-600 dark:text-white'
+                    fill='currentColor'
                     viewBox='0 0 24 24'
                 >
                     <path
@@ -50,18 +44,30 @@ const Menu = () => {
                     />
                 </svg>
             </MenuButton>
-            <MenuButton onClick={() => showSection('add_group')}>Group</MenuButton>
+            <MenuButton onClick={() => showSection('add_group')}>
+                <svg
+                    className='w-6 h-6 text-gray-600 dark:text-white'
+                    fill='currentColor'
+                    viewBox='0 0 24 24'
+                >
+                    <path
+                        fillRule='evenodd'
+                        d='M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z'
+                        clipRule='evenodd'
+                    />
+                </svg>
+            </MenuButton>
             <MenuButton
                 className='mt-auto'
-                onClick={() => logout()}
+                onClick={onLogout}
             >
                 <svg
-                    className='w-6 h-6 text-slate-800 dark:text-white'
+                    className='w-6 h-6 text-gray-600 dark:text-white'
                     aria-hidden='true'
                     xmlns='http://www.w3.org/2000/svg'
                     width='24'
                     height='24'
-                    fill='none'
+                    fill='currentColor'
                     viewBox='0 0 24 24'
                 >
                     <path
@@ -76,7 +82,7 @@ const Menu = () => {
             <MenuButton onClick={toggleMode}>
                 {mode === 'light' ? (
                     <svg
-                        className='w-6 h-6 text-slate-800 dark:text-white'
+                        className='w-6 h-6 text-gray-600 dark:text-white'
                         aria-hidden='true'
                         width='24'
                         height='24'
@@ -91,7 +97,7 @@ const Menu = () => {
                     </svg>
                 ) : (
                     <svg
-                        className='w-6 h-6 text-slate-800 dark:text-white'
+                        className='w-6 h-6 text-gray-600 dark:text-white'
                         aria-hidden='true'
                         width='24'
                         height='24'
@@ -107,23 +113,7 @@ const Menu = () => {
                 )}
             </MenuButton>
             <MenuButton onClick={() => showSection('profile')}>
-                <svg
-                    className='w-6 h-6 text-slate-800 dark:text-white'
-                    aria-hidden='true'
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                >
-                    <path
-                        stroke='currentColor'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        d='M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
-                    />
-                </svg>
+                <Avatar rounded />
             </MenuButton>
         </nav>
     )
@@ -134,7 +124,7 @@ const MenuButton = ({ className, children, ...props }) => {
         <button
             type='button'
             className={clsx(
-                'flex justify-center items-center rounded-full w-10 aspect-square bg-slate-600 cursor-pointer',
+                'flex justify-center items-center rounded-full w-10 aspect-square bg-gray-300 dark:bg-slate-600 cursor-pointer',
                 className
             )}
             {...props}
