@@ -64,16 +64,16 @@ const FriendList = () => {
                     <span className='flex items-center h-12'>Chats</span>
                 </p>
                 <svg
-                    class='ml-auto w-6 h-6 text-gray-800 dark:text-stone-200 cursor-pointer'
+                    className='ml-auto w-6 h-6 text-gray-800 dark:text-stone-200 cursor-pointer'
                     fill='none'
                     viewBox='0 0 24 24'
                     onClick={toggleRemove}
                 >
                     <path
                         stroke='currentColor'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
-                        stroke-width='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth='2'
                         d='M5 12h14'
                     />
                 </svg>
@@ -86,7 +86,11 @@ const FriendList = () => {
                     onChange={value => setSearch(value)}
                 />
             </div>
-            {isLoading && <Spinner />}
+            {isLoading && (
+                <span className='py-6 mx-auto'>
+                    <Spinner />
+                </span>
+            )}
             {list && (
                 <ul className='flex flex-col overflow-y-auto'>
                     {list.map((friend, index) => (
