@@ -2,14 +2,12 @@ import moment from 'moment'
 import { Avatar, Spinner, Popover } from 'flowbite-react'
 import Name from '#root/components/Name'
 import useFetch from '#root/hooks/useFetch'
-import { useChatStore } from '../store'
 import { useAppStore } from '#root/app/store'
 import { removeFriend } from '#root/api/friend'
 import { removeMember } from '#root/api/group'
 
 const RoomDetail = ({ roomId }) => {
-    const { user } = useAppStore()
-    const { info } = useChatStore()
+    const { user, info } = useAppStore()
 
     switch (info.type) {
         case 'friend': {

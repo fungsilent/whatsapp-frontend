@@ -4,6 +4,8 @@ import { useAppStore } from '#root/app/store'
 export const socketEvent = {
     REFRESH_ROOM_INFO: 'REFRESH_ROOM_INFO',
     NEW_ROOM_MESSAGE: 'NEW_ROOM_MESSAGE',
+    REMOVE_FRIEND: 'REMOVE_FRIEND',
+    DISABLE_FRIEND: 'DISABLE_FRIEND',
 }
 
 const useSocket = (socketFunc, dependency = []) => {

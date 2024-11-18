@@ -1,37 +1,7 @@
-import { useEffect } from 'react'
 import { Avatar } from 'flowbite-react'
-import { useAppStore } from '#root/app/store'
-import { useChatStore } from './store'
 import { panelMap } from './panel/Container'
-import useFetch from '#root/hooks/useFetch'
-import useSocket from '#root/hooks/useSocket'
-import { fetchRoomInfo } from '#root/api/room'
 
-const Info = ({ roomId, setPanel }) => {
-    const { setRoom } = useAppStore()
-    const { info, setInfo, resetRoom } = useChatStore()
-    const [dispatchInfo, roomInfo, isLoading, error] = useFetch()
-
-    useEffect(() => {
-        dispatchInfo(() => fetchRoomInfo(roomId))
-    }, [roomId])
-
-    useEffect(() => {
-        if (!roomInfo) return
-        setInfo(roomInfo)
-    }, [isLoading])
-
-    useSocket((socket, { REFRESH_ROOM_INFO }) => {
-        socket.on(REFRESH_ROOM_INFO, ({ isRemoved, ...info }) => {
-            if (isRemoved) {
-                setRoom(null)
-                resetRoom()
-            } else {
-                setInfo(info)
-            }
-        })
-    })
-
+const Info = ({ info, setPanel }) => {
     const getSubTitle = () => {
         if (false) {
             return 'Message youself'
@@ -49,7 +19,7 @@ const Info = ({ roomId, setPanel }) => {
             >
                 <div className='space-y-1'>
                     <div>{info.name}</div>
-                    <div className='text-sm text-gray-500 dark:text-gray-400'>{getSubTitle()}</div>
+                    <div className='text-sm text-gray-500 dark:text-gray-400 truncate '>{getSubTitle()}</div>
                 </div>
             </Avatar>
 

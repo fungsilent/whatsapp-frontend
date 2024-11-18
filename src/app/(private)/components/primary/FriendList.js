@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Avatar, Spinner, Popover } from 'flowbite-react'
 import moment from 'moment'
-import clsx from 'clsx'
 import TextField, { useText } from '#root/components/TextField'
 import DeleteConfrim, { useDelete } from '#root/components/DeleteConfrim'
 import Name from '#root/components/Name'
-import useFetch from '#root/hooks/useFetch'
-import { fetchFriends, removeFriend } from '#root/api/friend'
 import { useAppStore } from '#root/app/store'
 import useSocket from '#root/hooks/useSocket'
+import useFetch from '#root/hooks/useFetch'
+import { fetchFriends, removeFriend } from '#root/api/friend'
 
 const FriendList = () => {
     const [search, setSearch, debounceSearch] = useText('', 300)
@@ -31,23 +30,45 @@ const FriendList = () => {
         setList(result)
     }, [debounceSearch])
 
+    // update friend list
+    useSocket(
+        (socket, { REMOVE_FRIEND, DISABLE_FRIEND }) => {
+            const removeFriendHandler = ({ roomId: removedRoomId }) => {
+                setList(list.filter(friend => friend.roomId !== removedRoomId))
+            }
+            socket.on(REMOVE_FRIEND, removeFriendHandler)
+
+            const disableFriendHandler = ({ roomId: disabledRoomId }) => {
+                setList(
+                    updateFriend(list, disabledRoomId, {
+                        isDisable: true,
+                    })
+                )
+            }
+            socket.on(DISABLE_FRIEND, disableFriendHandler)
+
+            return () => {
+                socket.off(REMOVE_FRIEND, removeFriendHandler)
+                socket.off(DISABLE_FRIEND, disableFriendHandler)
+            }
+        },
+        [list]
+    )
+
+    // update last message
     useSocket(
         (socket, { NEW_ROOM_MESSAGE }) => {
             const handler = ({ type, room, user, content, date }) => {
-                const friendIndex = list.findIndex(friend => friend.roomId === room.id)
-                if (friendIndex === -1) return
-
-                const updatedFriend = {
-                    ...list[friendIndex],
-                    lastMessage: {
-                        type,
-                        content,
-                        date,
-                        by: room.type === 'group' ? user.name : null,
-                    },
-                }
-                list.splice(friendIndex, 1)
-                setList([updatedFriend, ...list])
+                setList(
+                    updateFriend(list, room.id, {
+                        lastMessage: {
+                            type,
+                            content,
+                            date,
+                            by: room.type === 'group' ? user.name : null,
+                        },
+                    })
+                )
             }
             socket.on(NEW_ROOM_MESSAGE, handler)
             return () => socket.off(NEW_ROOM_MESSAGE, handler)
@@ -92,7 +113,7 @@ const FriendList = () => {
                     <Spinner />
                 </span>
             )}
-            {list && (
+            {!isLoading && list.length && (
                 <ul className='flex flex-col overflow-y-auto'>
                     {list.map((friend, index) => (
                         <Friend
@@ -103,6 +124,7 @@ const FriendList = () => {
                     ))}
                 </ul>
             )}
+            {!isLoading && !list.length && <p className='py-6 text-sm text-center'>No chats found</p>}
         </div>
     )
 }
@@ -208,6 +230,21 @@ const Friend = ({ roomId, name, lastMessage, isDisable, enableRemove }) => {
             )}
         </li>
     )
+}
+
+/*
+ * Helper
+ */
+const updateFriend = (list, roomId, data) => {
+    const idnex = list.findIndex(friend => friend.roomId === roomId)
+    if (idnex === -1) return list
+
+    const updatedFriend = {
+        ...list[idnex],
+        ...data,
+    }
+    list.splice(idnex, 1)
+    return [updatedFriend, ...list]
 }
 
 export default FriendList

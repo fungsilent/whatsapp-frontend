@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAppStore } from "#root/app/store";
 import useFetch from "#root/hooks/useFetch";
-import { chatlist, removeRoom } from "#root/api/friend";
+import { chatlist, removeFriend } from "#root/api/friend";
 
 function Roomlist() {
   const { user } = useAppStore();
@@ -10,7 +10,7 @@ function Roomlist() {
 
   const remove = (roomId) => {
     console.log(roomId);
-    removeRoom(roomId);
+    removeFriend(roomId);
   };
 
   useEffect(() => {

@@ -29,10 +29,3 @@ export const removeFriend = async roomId => {
 export const chatlist = async () => {
     return await axiosBackend.get('/friend/list')
 }
-
-export const removeRoom = async roomId => {
-    console.log('room', roomId)
-    return await axiosBackend.delete('/friend/remove', {
-        data: { roomId },
-    })
-}
