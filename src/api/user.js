@@ -27,6 +27,11 @@ export const signup = async ({ name, username, password }) => {
     return res
 }
 
+
 export const fetchUserInfo = async () => {
     return await axiosBackend.get('/user/info')
+}
+
+export const updateUserInfo = async () => {
+    return await axiosBackend.patch('/user/update')
 }

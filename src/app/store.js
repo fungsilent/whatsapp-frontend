@@ -4,7 +4,7 @@ export const useAppStore = create(set => ({
     user: null,
     isAuth: false,
     socket: null,
-    primarySection: '',
+    primarySection: 'profile',
 
     setUser: user => {
         const isAuth = !!user
