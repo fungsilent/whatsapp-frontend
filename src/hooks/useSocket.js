@@ -6,13 +6,13 @@ export const socketEvent = {
     NEW_ROOM_MESSAGE: 'NEW_ROOM_MESSAGE',
 }
 
-const useSocket = socketFunc => {
+const useSocket = (socketFunc, dependency = []) => {
     const { socket } = useAppStore()
 
     useEffect(() => {
         if (!socket) return
-        socketFunc(socket, socketEvent)
-    }, [socket])
+        return socketFunc(socket, socketEvent)
+    }, [socket, ...dependency])
 }
 
 export default useSocket

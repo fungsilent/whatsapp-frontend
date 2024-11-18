@@ -35,11 +35,18 @@ const Chat = ({ roomId }) => {
         setMessages(newMessages)
     }, [isLoading])
 
-    useSocket((socket, { NEW_ROOM_MESSAGE }) => {
-        socket.on(NEW_ROOM_MESSAGE, newMessage => {
-            addMessages([newMessage])
-        })
-    })
+    useSocket(
+        (socket, { NEW_ROOM_MESSAGE }) => {
+            const handler = ({ room, ...newMessage }) => {
+                if (room.id === roomId) {
+                    addMessages([newMessage])
+                }
+            }
+            socket.on(NEW_ROOM_MESSAGE, handler)
+            return () => socket.off(NEW_ROOM_MESSAGE, handler)
+        },
+        [roomId]
+    )
 
     return (
         <ScrollToBottom

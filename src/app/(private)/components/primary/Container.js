@@ -13,7 +13,7 @@ const Container = () => {
     }
 
     return (
-        <div className='relative w-[400px] overflow-hidden'>
+        <div className='relative w-[400px] max-lg:w-[300px] max-md:w-[200px] overflow-hidden'>
             <FriendList />
             <Drawer
                 open={primarySection}
