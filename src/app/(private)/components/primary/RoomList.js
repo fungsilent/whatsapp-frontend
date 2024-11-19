@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Avatar, Spinner, Popover } from 'flowbite-react'
 import moment from 'moment'
-import TextField, { useText } from '#root/components/TextField'
+import { useText } from '#root/components/TextField'
+import SearchField from '#root/components/SearchField'
 import DeleteConfrim, { useDelete } from '#root/components/DeleteConfrim'
 import Name from '#root/components/Name'
 import { useAppStore } from '#root/app/store'
@@ -115,7 +116,7 @@ const RoomList = () => {
             </div>
 
             <div className='px-4'>
-                <TextField
+                <SearchField
                     placeholder='Search'
                     value={search}
                     onChange={value => setSearch(value)}

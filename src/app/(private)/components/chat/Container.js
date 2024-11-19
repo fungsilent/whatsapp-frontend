@@ -105,11 +105,6 @@ const ChatContainer = () => {
                             backgroundImage: 'url("https://static.whatsapp.net/rsrc.php/v3/yl/r/gi_DckOUM5a.png")',
                         }}
                     />
-                    {isLoading && (
-                        <div className='absolute z-50 left-[50%] top-[120px] translate-x-[-50%]'>
-                            <Spinner size='lg' />
-                        </div>
-                    )}
                     <div
                         className={clsx(
                             'flex flex-col bg-blue-200 dark:bg-slate-950 overflow-hidden transition-[width] duration-150'
@@ -122,7 +117,13 @@ const ChatContainer = () => {
                             info={info}
                             setPanel={setPanel}
                         />
-                        <Chat roomId={roomId} />
+                        <Chat roomId={roomId}>
+                            {isLoading && (
+                                <div className='absolute z-50 left-[50%] top-[60px] translate-x-[-50%]'>
+                                    <Spinner size='lg' />
+                                </div>
+                            )}
+                        </Chat>
                         <MessageInput
                             roomId={roomId}
                             info={info}

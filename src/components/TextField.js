@@ -9,7 +9,7 @@ export const useText = (initText, delay) => {
     return [text, setText, debounceText]
 }
 
-const TextField = ({ className, onEnter, onChange, onKeyDown, ...rest }) => {
+const TextField = ({ className, inputClassName, renderLeft, onEnter, onChange, onKeyDown, ...rest }) => {
     const handleKeyDown = event => {
         if (event.key === 'Enter' && onEnter) {
             onEnter(event)
@@ -23,17 +23,25 @@ const TextField = ({ className, onEnter, onChange, onKeyDown, ...rest }) => {
     }
 
     return (
-        <input
+        <div
             className={overrideTailwindClasses(
                 clsx(
-                    'w-full rounded px-3 py-1 bg-stone-200 dark:bg-slate-600 placeholder-gray-400 outline-none',
+                    'flex gap-3 w-full rounded px-3 py-2',
+                    'bg-stone-200 dark:bg-slate-600 placeholder-gray-400',
                     className
                 )
             )}
-            onChange={handleOnChange}
-            onKeyDown={handleKeyDown}
-            {...rest}
-        />
+        >
+            {renderLeft}
+            <input
+                className={overrideTailwindClasses(
+                    clsx('w-full outline-none bg-transparent placeholder-gray-400', inputClassName)
+                )}
+                onChange={handleOnChange}
+                onKeyDown={handleKeyDown}
+                {...rest}
+            />
+        </div>
     )
 }
 
