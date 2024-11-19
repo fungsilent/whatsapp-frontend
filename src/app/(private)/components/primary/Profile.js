@@ -63,7 +63,7 @@ const Profile = () => {
             </div>
         </>
     )
-}
+
       <p>Update Password:</p>
       <input placeholder="********" />
       <div className="mt-5">
