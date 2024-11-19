@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, Modal } from 'flowbite-react'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 
-export const useDelete = ({ text, onConfirm }) => {
+export const useDelete = ({ text } = {}) => {
     const [showRemoveConfrim, setRemoveConfrim] = useState(false)
 
     return {
@@ -10,7 +10,6 @@ export const useDelete = ({ text, onConfirm }) => {
         isOpen: showRemoveConfrim,
         onOpen: () => setRemoveConfrim(true),
         onClose: () => setRemoveConfrim(false),
-        onConfirm,
     }
 }
 
@@ -21,15 +20,17 @@ const DeleteConfrim = ({ text, isOpen, onClose, onConfirm }) => {
             size='md'
             onClose={onClose}
             popup
+            dismissible
         >
             <Modal.Header />
             <Modal.Body>
                 <div className='text-center'>
-                    <HiOutlineExclamationCircle className='mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200' />
+                    <HiOutlineExclamationCircle className='mx-auto mb-4 h-10 w-10 text-gray-400 dark:text-gray-200' />
                     <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>{text}</h3>
                     <div className='flex justify-center gap-4'>
                         <Button
                             color='failure'
+                            className='bg-rose-600 dark:bg-rose-600 enabled:hover:bg-rose-500 dark:enabled:hover:bg-rose-500'
                             onClick={() => {
                                 onConfirm()
                                 onClose() // Close modal after confirmation

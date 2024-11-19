@@ -4,8 +4,7 @@ import { Avatar, Spinner, Popover } from "flowbite-react";
 import TextField, { useText } from "#root/components/TextField";
 import Name from "#root/components/Name";
 import useFetch from "#root/hooks/useFetch";
-import { searchUser } from "#root/api/friend";
-import { addMember } from "#root/api/group";
+import { searchUser, addMember } from "#root/api/chat";
 
 const AddGroupMember = ({ roomId }) => {
   const [search, setSearch, debounceSearch] = useText("", 300);

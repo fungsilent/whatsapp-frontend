@@ -27,6 +27,7 @@ const ChatContainer = () => {
     }, [isLoading])
 
     /* socket */
+    // update room info
     useSocket(
         (socket, { REFRESH_ROOM_INFO }) => {
             const refreshRoomInfo = ({ roomId: refreshRoomId, ...info }) => {
@@ -39,6 +40,26 @@ const ChatContainer = () => {
         [roomId]
     )
 
+    // update group members list when someone leave room
+    useSocket(
+        (socket, { MEMBER_LEAVE_ROOM }) => {
+            const leaveRoom = ({ roomId: leaveRoomId, memberId }) => {
+                if (leaveRoomId !== roomId) return
+                const members = info.members.filter(member => member.userId !== memberId)
+                const newInfo = {
+                    ...info,
+                    members,
+                    membersCount: members.length,
+                }
+                setInfo(newInfo)
+            }
+            socket.on(MEMBER_LEAVE_ROOM, leaveRoom)
+            return () => socket.off(MEMBER_LEAVE_ROOM, leaveRoom)
+        },
+        [roomId, info]
+    )
+
+    // clear chat section when user remove chat / leave group
     useSocket(
         (socket, { REMOVE_ROOM }) => {
             const removeRoom = ({ roomId: removedRoomId }) => {
@@ -50,6 +71,22 @@ const ChatContainer = () => {
             return () => socket.off(REMOVE_ROOM, removeRoom)
         },
         [roomId]
+    )
+
+    // disable room when friend removed chat
+    useSocket(
+        (socket, { DISABLE_ROOM }) => {
+            const updateDisabled = ({ roomId: disabledRoomId }) => {
+                if (disabledRoomId !== roomId) return
+                setInfo({
+                    ...info,
+                    isDisable: true,
+                })
+            }
+            socket.on(DISABLE_ROOM, updateDisabled)
+            return () => socket.off(DISABLE_ROOM, updateDisabled)
+        },
+        [roomId, info]
     )
 
     /* render */

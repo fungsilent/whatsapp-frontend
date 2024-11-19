@@ -143,12 +143,11 @@ const RoomList = () => {
 const Chat = ({ roomId, name, lastMessage, isDisable, enableRemove }) => {
   const { setRoom } = useAppStore();
   const [dispatchRemove, isRemoved, isLoading, error] = useFetch();
-  const { onOpen, ...removeConfrimProps } = useDelete({
-    text: `Are you sure you want to delete ${name}?`,
-    onConfirm: () => {
-      dispatchRemove(() => removeRoom(roomId));
-    },
-  });
+  const { onOpen, ...removeConfrimProps } = useDelete();
+
+  const onConfirm = () => {
+    dispatchRemove(() => removeRoom(roomId));
+  };
 
   /* render */
   let messageTime = "";
@@ -229,7 +228,11 @@ const Chat = ({ roomId, name, lastMessage, isDisable, enableRemove }) => {
               </Popover>
             )}
           </div>
-          <DeleteConfrim {...removeConfrimProps} />
+          <DeleteConfrim
+            {...removeConfrimProps}
+            text={`Are you sure you want to delete ${name}?`}
+            onConfirm={onConfirm}
+          />
         </>
       )}
     </li>

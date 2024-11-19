@@ -19,12 +19,12 @@ const Info = ({ info, setPanel }) => {
             >
                 <div className='space-y-1'>
                     <div>{info.name}</div>
-                    <div className='text-sm text-gray-500 dark:text-gray-400 truncate '>{getSubTitle()}</div>
+                    <div className='text-sm text-gray-500 dark:text-gray-400 truncate'>{getSubTitle()}</div>
                 </div>
             </Avatar>
 
             <svg
-                className='w-6 h-6 text-gray-800 dark:text-stone-200 cursor-pointer'
+                className='shrink-0 w-6 h-6 text-gray-800 dark:text-stone-200 cursor-pointer'
                 aria-hidden='true'
                 fill='none'
                 viewBox='0 0 24 24'
@@ -39,7 +39,7 @@ const Info = ({ info, setPanel }) => {
             </svg>
             {info.type === 'group' && (
                 <svg
-                    className='w-6 h-6 text-gray-800 dark:text-stone-200 cursor-pointer'
+                    className='shrink-0 w-6 h-6 text-gray-800 dark:text-stone-200 cursor-pointer'
                     aria-hidden='true'
                     fill='none'
                     viewBox='0 0 24 24'
