@@ -35,7 +35,11 @@ const TextField = ({ className, inputClassName, renderLeft, onEnter, onChange, o
             {renderLeft}
             <input
                 className={overrideTailwindClasses(
-                    clsx('w-full outline-none bg-transparent placeholder-gray-400', inputClassName)
+                    clsx(
+                        'w-full outline-none bg-transparent placeholder-gray-400',
+                        'p-0 border-none border-0 focus:ring-0',
+                        inputClassName
+                    )
                 )}
                 onChange={handleOnChange}
                 onKeyDown={handleKeyDown}
