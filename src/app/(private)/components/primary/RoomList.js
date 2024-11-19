@@ -99,7 +99,7 @@ const RoomList = () => {
                     <span className='flex items-center h-12'>Chats</span>
                 </p>
                 <svg
-                    className='ml-auto w-6 h-6 text-gray-800 dark:text-stone-200 cursor-pointer'
+                    className='ml-auto w-6 h-6 cursor-pointer'
                     fill='none'
                     viewBox='0 0 24 24'
                     onClick={toggleRemove}

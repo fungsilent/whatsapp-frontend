@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { ThemeModeScript } from 'flowbite-react'
+import { ThemeModeScript, Flowbite } from 'flowbite-react'
 import { useAppStore } from '#root/app/store'
 import { fetchUserInfo } from '#root/api/user'
 import useFetch from '#root/hooks/useFetch'
@@ -17,7 +17,6 @@ const RootLayout = ({ children }) => {
     const [status, setStatus] = useState(STATUS.PENDING)
     const [dispatchFetch, user, isLoading, error] = useFetch({
         initLoading: true,
-        // log: 'fetchUserInfo',
     })
 
     useEffect(() => {
@@ -31,18 +30,17 @@ const RootLayout = ({ children }) => {
     }, [isLoading])
 
     return (
-        <html
-            suppressHydrationWarning
-            className='dark'
-        >
+        <html suppressHydrationWarning>
             <head>
-                <ThemeModeScript />
+                <ThemeModeScript mode={'dark'} />
             </head>
 
-            <body className='bg-zinc-800 text-stone-800 dark:text-stone-200'>
-                {status === STATUS.PENDING && <Loader full />}
-                {status === STATUS.PREPARED && children}
-            </body>
+            <Flowbite theme={{ mode: 'dark' }}>
+                <body className='bg-zinc-800 text-stone-800 dark:text-stone-100'>
+                    {status === STATUS.PENDING && <Loader full />}
+                    {status === STATUS.PREPARED && children}
+                </body>
+            </Flowbite>
         </html>
     )
 }
