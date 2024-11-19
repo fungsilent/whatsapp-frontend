@@ -1,71 +1,46 @@
 "use client";
 import { addFriend, searchUser } from "#root/api/chat";
 import useFetch from "#root/hooks/useFetch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Name from "#root/components/Name";
 import clsx from "clsx";
 import { Avatar, Spinner, Popover, Modal } from "flowbite-react";
 import TextField, { useText } from "#root/components/TextField";
 
 function NewFriend() {
-  const [userlist, setUserlist] = useState([]);
-  const [newUsername, setNewUsername] = useState("");
+  const [search, setSearch, debounceSearch] = useText("", 300);
+  const [dispatchSearch, users, isLoading, error] = useFetch();
 
-  const handleChange = (value) => {
-    setNewUsername(value);
-  };
+  useEffect(() => {
+    if (debounceSearch) {
+      dispatchSearch(() => searchUser(debounceSearch));
+    }
+  }, [debounceSearch]);
 
-  const search = async (newUsername) => {
-    const data = await searchUser(newUsername);
-    setUserlist(data.data);
-  };
-
-  console.log(userlist);
+  console.log(users);
   return (
     <div className="h-full flex flex-col gap-3 bg-white dark:bg-slate-900 border-r-[1px] border-stone-300 dark:border-slate-700 overflow-y-auto">
       <p className="py-2 px-4 text-2xl">Search friend</p>
       <div className="flex content-center m-4  mt-0 border-b-2 pb-4">
         <div className="flex content-center  ">
-          {/* <input
-            className="w-75% rounded px-3 py-1 bg-stone-200 dark:bg-slate-600 placeholder-gray-400 outline-none',"
-            onChange={handleChange}
-            placeholder="Insert friend username"
-          ></input> */}
           <TextField
             placeholder="Insert friend username"
-            value={newUsername}
-            onChange={handleChange}
+            value={search}
+            onChange={(value) => setSearch(value)}
           />
-
-          <button onClick={() => search(newUsername)}>
-            {" "}
-            <svg
-              className="w-8 h-8 ml-4 text-gray-800 dark:text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth="2"
-                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
-              />
-            </svg>
-          </button>
         </div>
       </div>
       <div>
-        {userlist.length === 0 ? (
-          <div className="text-center">User not found</div>
-        ) : null}
+        {debounceSearch && !isLoading && !users?.length && (
+          <p className="py-6 text-sm text-center">No user found</p>
+        )}
 
-        {userlist.map((user, index) => (
-          <Addfriend key={user.username} user={user} />
-        ))}
+        {debounceSearch &&
+          !isLoading &&
+          !!users?.length &&
+          users.map((user, index) => (
+            <Addfriend key={user.username} user={user} />
+          ))}
       </div>
     </div>
   );

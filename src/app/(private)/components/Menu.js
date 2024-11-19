@@ -83,9 +83,6 @@ const Menu = () => {
                 {mode === 'light' ? (
                     <svg
                         className='w-6 h-6 text-gray-600 dark:text-white'
-                        aria-hidden='true'
-                        width='24'
-                        height='24'
                         fill='currentColor'
                         viewBox='0 0 24 24'
                     >
@@ -98,9 +95,6 @@ const Menu = () => {
                 ) : (
                     <svg
                         className='w-6 h-6 text-gray-600 dark:text-white'
-                        aria-hidden='true'
-                        width='24'
-                        height='24'
                         fill='currentColor'
                         viewBox='0 0 24 24'
                     >
