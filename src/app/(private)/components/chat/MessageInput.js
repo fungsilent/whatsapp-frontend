@@ -1,11 +1,9 @@
 import { useEffect } from 'react'
 import TextField, { useText } from '#root/components/TextField'
 import useFetch from '#root/hooks/useFetch'
-import { useChatStore } from './store'
 import { sendRoomMessage } from '#root/api/room'
 
-const MessageInput = ({ roomId }) => {
-    const { info } = useChatStore()
+const MessageInput = ({ roomId, info: { isDisable } }) => {
     const [message, setMessage] = useText('', 300)
     const [dispatchSend, isSent, isLoading, error] = useFetch()
 
@@ -21,6 +19,12 @@ const MessageInput = ({ roomId }) => {
         }
     }, [isSent])
 
+    useEffect(() => {
+        if (isDisable) {
+            setMessage('')
+        }
+    }, [isDisable])
+
     return (
         <div className='flex gap-4 py-2 px-3 z-20 bg-stone-200 dark:bg-slate-800'>
             {/* {[...Array(2)].map((item, index) => (
@@ -31,11 +35,11 @@ const MessageInput = ({ roomId }) => {
             ))} */}
             <TextField
                 className='bg-white dark:bg-slate-600'
-                placeholder={info.isDisable ? 'Chat closed' : 'Type a message'}
+                placeholder={isDisable ? 'Chat closed' : 'Type a message'}
                 value={message}
                 onChange={value => setMessage(value)}
                 onEnter={onEnter}
-                disabled={info.isDisable}
+                disabled={isDisable}
             />
         </div>
     )
