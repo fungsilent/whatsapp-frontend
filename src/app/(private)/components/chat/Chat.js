@@ -9,7 +9,7 @@ import useSocket from '#root/hooks/useSocket'
 import { useAppStore } from '#root/app/store'
 import { fetchRoomMessage } from '#root/api/room'
 
-const Chat = ({ roomId }) => {
+const Chat = ({ roomId, children }) => {
     const { messages, setMessages, addMessages } = useAppStore()
     const [dispatchMessage, newMessages, isLoading, error] = useFetch()
     /*
@@ -83,6 +83,7 @@ const Chat = ({ roomId }) => {
                     </Fragment>
                 )
             })}
+            {children}
         </ScrollToBottom>
     )
 }

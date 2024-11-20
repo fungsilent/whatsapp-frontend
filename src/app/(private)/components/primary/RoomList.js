@@ -9,6 +9,17 @@ import useSocket from "#root/hooks/useSocket";
 import useFetch from "#root/hooks/useFetch";
 import { fetchRooms, removeRoom } from "#root/api/room";
 import Icon from "#root/components/Icon";
+import { useState, useEffect } from "react";
+import { Avatar, Spinner, Popover } from "flowbite-react";
+import moment from "moment";
+import { useText } from "#root/components/TextField";
+import SearchField from "#root/components/SearchField";
+import DeleteConfrim, { useDelete } from "#root/components/DeleteConfrim";
+import Name from "#root/components/Name";
+import { useAppStore } from "#root/app/store";
+import useSocket from "#root/hooks/useSocket";
+import useFetch from "#root/hooks/useFetch";
+import { fetchRooms, removeRoom } from "#root/api/room";
 
 const RoomList = () => {
   const [search, setSearch, debounceSearch] = useText("", 300);
@@ -116,7 +127,7 @@ const RoomList = () => {
       </div>
 
       <div className="px-4">
-        <TextField
+        <SearchField
           placeholder="Search"
           value={search}
           onChange={(value) => setSearch(value)}
@@ -129,8 +140,8 @@ const RoomList = () => {
       )}
       {!isLoading && !!list.length && (
         <ul className="flex flex-col overflow-y-auto">
-          {list.map((room, index) => (
-            <Chat key={index} {...room} enableRemove={enableRemove} />
+          {list.map((room) => (
+            <Chat key={room.roomId} {...room} enableRemove={enableRemove} />
           ))}
         </ul>
       )}
@@ -141,7 +152,7 @@ const RoomList = () => {
   );
 };
 
-const Chat = ({ roomId, name, lastMessage, isDisable, enableRemove, type }) => {
+const Chat = ({ roomId, name, lastMessage, isDisable, enableRemove }) => {
   const { setRoom } = useAppStore();
   const [dispatchRemove, isRemoved, isLoading, error] = useFetch();
   const { onOpen, ...removeConfrimProps } = useDelete();
