@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Spinner } from 'flowbite-react'
 import TextField, { useText } from '#root/components/TextField'
 import useFetch from '#root/hooks/useFetch'
 import { sendRoomMessage } from '#root/api/room'
@@ -39,7 +40,8 @@ const MessageInput = ({ roomId, info: { isDisable } }) => {
                 value={message}
                 onChange={value => setMessage(value)}
                 onEnter={onEnter}
-                disabled={isDisable}
+                disabled={isDisable || isLoading}
+                renderLeft={isLoading && <Spinner className='dark:text-slate-700' />}
             />
         </div>
     )

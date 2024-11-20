@@ -46,9 +46,9 @@ const RoomDetail = ({ roomId }) => {
 
                     <div className='flex flex-col mb-3 bg-white dark:bg-slate-900'>
                         <p className='p-3'>{info.membersCount} members</p>
-                        {info.members.map((member, index) => (
+                        {info.members.map(member => (
                             <Member
-                                key={index}
+                                key={member.userId}
                                 roomId={roomId}
                                 {...member}
                                 hasAdmin={member.isAdmin}
