@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import moment from 'moment'
-import TextField, { useText } from '#root/components/TextField'
+import { useText } from '#root/components/TextField'
+import SearchField from '#root/components/SearchField'
 import Name from '#root/components/Name'
 import { useAppStore } from '#root/app/store'
 
@@ -40,7 +41,7 @@ const SearchMessage = () => {
     return (
         <>
             <div className='p-3 mb-3 bg-white dark:bg-slate-900'>
-                <TextField
+                <SearchField
                     placeholder='Search'
                     value={search}
                     onChange={value => setSearch(value)}

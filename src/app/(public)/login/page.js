@@ -78,7 +78,7 @@ const LoginPage = () => {
                     {error && <p className='text-rose-600'>{error}</p>}
 
                     <p className='text-sm font-light text-gray-600 dark:text-white'>
-                        {`Don't have an account yet? `}
+                        {`Don't have an account yet?`}
                         <Link
                             href='/signup'
                             className='font-medium text-yellow-600 dark:text-yellow-300 hover:underline'
