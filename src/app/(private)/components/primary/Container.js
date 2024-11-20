@@ -3,7 +3,7 @@ import { useAppStore } from '#root/app/store'
 import RoomList from './RoomList'
 import Profile from './Profile'
 import AddFriend from './AddFriend'
-import Group from './addGroup'
+import Group from './AddGroup'
 
 const Container = () => {
     const { primarySection, showSection } = useAppStore()
