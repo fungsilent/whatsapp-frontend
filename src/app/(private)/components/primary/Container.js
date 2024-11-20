@@ -3,7 +3,7 @@ import { useAppStore } from '#root/app/store'
 import RoomList from './RoomList'
 import Profile from './Profile'
 import AddFriend from './AddFriend'
-import Group from './AddGroup'
+import AddGroup from './AddGroup'
 
 const Container = () => {
     const { primarySection, showSection } = useAppStore()
@@ -23,7 +23,7 @@ const Container = () => {
             >
                 {primarySection === 'profile' && <Profile />}
                 {primarySection === 'add_friend' && <AddFriend />}
-                {primarySection === 'add_group' && <Group />}
+                {primarySection === 'add_group' && <AddGroup />}
             </Drawer>
         </div>
     )
