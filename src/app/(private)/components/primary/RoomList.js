@@ -129,9 +129,9 @@ const RoomList = () => {
             )}
             {!isLoading && !!list.length && (
                 <ul className='flex flex-col overflow-y-auto'>
-                    {list.map((room, index) => (
+                    {list.map(room => (
                         <Chat
-                            key={index}
+                            key={room.roomId}
                             {...room}
                             enableRemove={enableRemove}
                         />

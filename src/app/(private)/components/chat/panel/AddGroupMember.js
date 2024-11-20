@@ -39,9 +39,9 @@ const AddGroupMember = ({ roomId }) => {
                 {debounceSearch &&
                     !isLoading &&
                     !!users?.length &&
-                    users.map((user, index) => (
+                    users.map(user => (
                         <AddMember
-                            key={index}
+                            key={user.id}
                             roomId={roomId}
                             {...user}
                         />
