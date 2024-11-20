@@ -1,5 +1,7 @@
 import moment from 'moment'
-import { Avatar, Spinner, Popover } from 'flowbite-react'
+import clsx from 'clsx'
+import { Spinner, Popover } from 'flowbite-react'
+import Icon from '#root/components/Icon'
 import Name from '#root/components/Name'
 import DeleteConfrim, { useDelete } from '#root/components/DeleteConfrim'
 import useFetch from '#root/hooks/useFetch'
@@ -14,9 +16,13 @@ const RoomDetail = ({ roomId }) => {
         case 'friend': {
             return (
                 <>
-                    <BasicInfo>
+                    <BasicInfo
+                        name={info.name}
+                        type={info.type}
+                    >
                         <Name type='name'>{info.name}</Name> <Name type='username'>{info.username}</Name>
                     </BasicInfo>
+
                     <RemoveRoom
                         roomId={roomId}
                         type={info.type}
@@ -29,10 +35,14 @@ const RoomDetail = ({ roomId }) => {
             const isAdmin = info.members.find(member => member.userId === user.id)?.isAdmin
             return (
                 <>
-                    <BasicInfo>
+                    <BasicInfo
+                        name={info.name}
+                        type={info.type}
+                    >
                         <p className='text-xl'>{info.name}</p>
                     </BasicInfo>
-                    <div className='flex flex-col gap-3 p-3 mb-3 bg-white dark:bg-slate-900'>
+
+                    <div className='flex flex-col gap-3 px-4 py-3 mb-3 bg-white dark:bg-slate-900'>
                         <p className=''>
                             {'Group created by '}
                             <Name type='name'>{info.createdBy.name}</Name>{' '}
@@ -67,13 +77,14 @@ const RoomDetail = ({ roomId }) => {
     }
 }
 
-const BasicInfo = ({ children }) => {
+const BasicInfo = ({ name, type, children }) => {
     return (
-        <div className='flex flex-col items-center gap-3 p-3 mb-3 bg-white dark:bg-slate-900'>
-            <Avatar
-                rounded
-                size='xl'
-                className='justify-start'
+        <div className='flex flex-col items-center gap-3 px-4 py-3 mb-3 bg-white dark:bg-slate-900'>
+            <Icon
+                name={name}
+                type={type}
+                className='h-36 w-36'
+                textClassName='text-5xl'
             />
             {children}
         </div>
@@ -127,9 +138,9 @@ const RemoveRoom = ({ roomId, type }) => {
     const label = type === 'friend' ? 'Remove chat' : 'Exit group'
 
     return (
-        <div className='flex-1 flex flex-col gap-3 p-3 mb-3 bg-white dark:bg-slate-900'>
+        <div className='flex-1 flex flex-col gap-3 bg-white dark:bg-slate-900'>
             <div
-                className='flex gap-3 items-center cursor-pointer'
+                className='flex gap-3 px-4 py-3 items-center cursor-pointer'
                 onClick={onOpen}
             >
                 {renderIcon()}
@@ -180,24 +191,34 @@ const Member = ({ roomId, name, username, hasAdmin, isAdmin }) => {
     }
 
     return (
-        <div className='p-3 border-b-2 border-b-stone-200 dark:border-b-slate-800 hover:bg-slate-100 hover:dark:bg-slate-700'>
-            <div className='flex gap-3 items-center'>
-                <Avatar
-                    rounded
-                    size='md'
-                />
+        <div className='flex gap-4 px-4 py-3 items-center border-b-2 border-b-stone-200 dark:border-b-slate-800 hover:bg-slate-100 hover:dark:bg-slate-700'>
+            <Icon
+                name={name}
+                type='friend'
+            />
+            <div className='flex flex-col gap-1'>
                 <Name type='name'>{name}</Name>
                 <Name type='username'>{username}</Name>
-                {hasAdmin && <span className='text-xs p-1 bg-blue-200 text-blue-800 rounded-md'>Admin</span>}
-                {isAdmin && (
-                    <span
-                        className='ml-auto cursor-pointer'
-                        onClick={onRemove}
-                    >
-                        {isLoading && <Spinner />}
-                        {!isLoading && !error && (
+            </div>
+            {hasAdmin && <span className='text-xs p-1 bg-blue-200 text-blue-800 rounded-md'>Admin</span>}
+            {isAdmin && (
+                <span
+                    className='ml-auto cursor-pointer'
+                    onClick={onRemove}
+                >
+                    {isLoading && <Spinner />}
+                    {!isLoading && (
+                        <Popover
+                            trigger={error && 'hover'}
+                            placement='left'
+                            content={<p className='py-1 px-2'>{error}</p>}
+                        >
                             <svg
-                                className='w-6 h-6 text-gray-500 dark:text-white'
+                                className={clsx(
+                                    'w-6 h-6',
+                                    { 'text-gray-500 dark:text-white': !error },
+                                    { 'text-rose-600': error }
+                                )}
                                 fill='currentColor'
                                 viewBox='0 0 24 24'
                             >
@@ -207,29 +228,10 @@ const Member = ({ roomId, name, username, hasAdmin, isAdmin }) => {
                                     clipRule='evenodd'
                                 />
                             </svg>
-                        )}
-                        {error && (
-                            <Popover
-                                trigger='hover'
-                                placement='left'
-                                content={<p className='py-1 px-2'>{error}</p>}
-                            >
-                                <svg
-                                    className='w-6 h-6 text-rose-600'
-                                    fill='currentColor'
-                                    viewBox='0 0 24 24'
-                                >
-                                    <path
-                                        fillRule='evenodd'
-                                        d='M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z'
-                                        clipRule='evenodd'
-                                    />
-                                </svg>
-                            </Popover>
-                        )}
-                    </span>
-                )}
-            </div>
+                        </Popover>
+                    )}
+                </span>
+            )}
         </div>
     )
 }

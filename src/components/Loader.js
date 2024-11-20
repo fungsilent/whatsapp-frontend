@@ -7,7 +7,7 @@ const Loader = ({ full = false }) => {
                 'flex justify-center items-center max-w-[800px] w-full h-[100vh] p-10 m-auto': full,
             })}
         >
-            <div className={clsx('loader w-full')}></div>
+            <div className='loader'></div>
         </div>
     )
 }

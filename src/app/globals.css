@@ -16,22 +16,12 @@
  * Loader
  */
 .loader {
-    position: relative;
-    background-color: #bc9e8d;
-    height: 8px;
-    border-radius: 4px;
-    overflow: hidden;
+    @apply relative w-full h-2 rounded overflow-hidden bg-slate-700;
 }
 .loader::before {
     content: '';
-    background-color: #765333;
-    border-radius: 4px;
-    position: absolute;
-    left: -10%;
-    top: 0;
-    width: 10%;
-    height: 100%;
     animation: loader 1s infinite ease-in-out;
+    @apply absolute left-[-10%] top-0 rounded w-[10%] h-full bg-primary-600;
 }
 @keyframes loader {
     50% {

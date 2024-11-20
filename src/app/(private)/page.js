@@ -8,7 +8,7 @@ const HomePage = () => {
     const {} = useAppStore()
 
     return (
-        <div className='flex justify-center items-center w-full max-w-[1600px] h-[100vh] m-auto p-6'>
+        <div className='flex justify-center items-center w-full max-w-[1600px] h-screen m-auto'>
             <div className='flex h-full w-full'>
                 <Menu />
                 <Primary />

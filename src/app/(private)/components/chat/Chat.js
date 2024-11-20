@@ -2,7 +2,7 @@ import { useEffect, Fragment } from 'react'
 import moment from 'moment'
 import clsx from 'clsx'
 import ScrollToBottom, { useSticky, useScrollToEnd } from 'react-scroll-to-bottom'
-import { Avatar } from 'flowbite-react'
+import Icon from '#root/components/Icon'
 import Name from '#root/components/Name'
 import useFetch from '#root/hooks/useFetch'
 import useSocket from '#root/hooks/useSocket'
@@ -118,15 +118,14 @@ const ScrollToEnd = () => {
 
 const Message = ({ showUser, messageId, user, content, date }) => {
     const renderIcon = () => (
-        <i className='w-8 h-8'>
+        <span className='w-8 h-8'>
             {showUser && (
-                <Avatar
-                    rounded
-                    size='sm'
-                    className='mr-auto justify-start'
+                <Icon
+                    name={user.name}
+                    type='friend'
                 />
             )}
-        </i>
+        </span>
     )
 
     return (
@@ -140,10 +139,10 @@ const Message = ({ showUser, messageId, user, content, date }) => {
                 {!user.isSelf && (
                     <p className='flex gap-2 text-sm'>
                         <Name type='name'>{user.name}</Name>
-                        <Name type='username'>{user.username}</Name>
+                        {/* <Name type='username'>{user.username}</Name> */}
                     </p>
                 )}
-                <p>{content}</p>
+                <p className='whitespace-pre'>{content}</p>
                 <p className='self-end text-xs text-gray-600 dark:text-gray-400'>{moment(date).format('HH:mm')}</p>
             </div>
         </div>

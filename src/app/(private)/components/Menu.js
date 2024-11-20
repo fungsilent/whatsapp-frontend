@@ -1,9 +1,10 @@
 import clsx from 'clsx'
-import { useThemeMode, Avatar } from 'flowbite-react'
+import { useThemeMode } from 'flowbite-react'
+import Icon from '#root/components/Icon'
 import { useAppStore } from '#root/app/store'
 
 const Menu = () => {
-    const { setUser, showSection, resetRoom } = useAppStore()
+    const { user, setUser, showSection, resetRoom } = useAppStore()
     const { mode, toggleMode } = useThemeMode()
 
     const onLogout = () => {
@@ -107,7 +108,10 @@ const Menu = () => {
                 )}
             </MenuButton>
             <MenuButton onClick={() => showSection('profile')}>
-                <Avatar rounded />
+                <Icon
+                    name={user.name}
+                    type='friend'
+                />
             </MenuButton>
         </nav>
     )

@@ -1,4 +1,4 @@
-import { Avatar } from 'flowbite-react'
+import Icon from '#root/components/Icon'
 import { panelMap } from './panel/Container'
 
 const Info = ({ info, setPanel }) => {
@@ -11,17 +11,18 @@ const Info = ({ info, setPanel }) => {
 
     return (
         <div className='flex gap-4 items-center px-4 py-2 z-20 bg-stone-200 dark:bg-slate-800'>
-            <Avatar
-                rounded
-                size='md'
-                className='mr-auto justify-start cursor-pointer'
+            <div
+                className='grid grid-rows-2 grid-cols-[auto_auto] gap-x-4 gap-y-1 items-center mr-auto cursor-pointer'
                 onClick={() => setPanel(panelMap.ROOM_DETAIL.key)}
             >
-                <div className='space-y-1'>
-                    <div>{info.name}</div>
-                    <div className='text-sm text-gray-500 dark:text-gray-400 truncate'>{getSubTitle()}</div>
-                </div>
-            </Avatar>
+                <Icon
+                    name={info.name}
+                    type={info.type}
+                    className='row-span-2'
+                />
+                <div>{info.name}</div>
+                <div className='text-sm text-gray-500 dark:text-gray-400 truncate'>{getSubTitle()}</div>
+            </div>
 
             <svg
                 className='shrink-0 w-6 h-6 text-gray-800 dark:text-stone-200 cursor-pointer'
