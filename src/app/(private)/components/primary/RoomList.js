@@ -97,7 +97,7 @@ const RoomList = () => {
 
     return (
         <div className='h-full flex flex-col gap-3 bg-white dark:bg-slate-900 border-r-[1px] border-stone-300 dark:border-slate-700 overflow-y-auto'>
-            <div className='flex items-center py-2 px-4'>
+            <div className='flex items-center px-4 h-[68px]'>
                 <p className='mr-auto text-2xl'>
                     <span className='flex items-center h-12'>Chats</span>
                 </p>
@@ -179,7 +179,6 @@ const Chat = ({ roomId, name, lastMessage, isDisable, enableRemove, type }) => {
                 />
 
                 <div className='flex-1 grid grid-rows-2 grid-cols-1 gap-2 border-b-2 border-b-stone-200 dark:border-b-slate-800 pr-4 py-2'>
-                    {/* <div className='flex-1 grid grid-rows-2 grid-cols-[1fr_auto] gap-y-2 gap-4'> */}
                     <div className='grid grid-cols-[1fr_auto]'>
                         <Name
                             type='name'
@@ -188,22 +187,16 @@ const Chat = ({ roomId, name, lastMessage, isDisable, enableRemove, type }) => {
                             {name}
                         </Name>
                         <span className='text-sm text-slate-400'>{messageTime}</span>
-                        {/* {lastMessage && (
-                            <>
-                                <span className='truncate'>
-                                    {lastMessage.by ? `${lastMessage.by} : ` : ''}
-                                    {lastMessage.content}
-                                </span>
-                            </>
-                        )} */}
                     </div>
                     <div className='grid grid-cols-[1fr_auto]'>
-                        {lastMessage && (
-                            <span className='truncate'>
-                                {lastMessage.by ? `${lastMessage.by} : ` : ''}
-                                {lastMessage.content}
-                            </span>
-                        )}
+                        <span className='truncate'>
+                            {lastMessage && (
+                                <>
+                                    {lastMessage.by ? `${lastMessage.by} : ` : ''}
+                                    {lastMessage.content}
+                                </>
+                            )}
+                        </span>
                         {isDisable && (
                             <svg
                                 className='w-6 h-6 text-gray-500 dark:text-white'
@@ -216,14 +209,12 @@ const Chat = ({ roomId, name, lastMessage, isDisable, enableRemove, type }) => {
                             </svg>
                         )}
                     </div>
-
-                    {/* </div> */}
                 </div>
             </div>
 
             {enableRemove && (
                 <>
-                    <div className='flex justify-center items-center w-8'>
+                    <div className='flex justify-center items-center w-9'>
                         {isLoading && <Spinner />}
                         {!isLoading && (
                             <Popover

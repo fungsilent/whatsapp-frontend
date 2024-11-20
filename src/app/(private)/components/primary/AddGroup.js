@@ -18,8 +18,12 @@ const NewGroup = () => {
     }
 
     return (
-        <div className='h-full flex flex-col gap-3 bg-white dark:bg-slate-900 border-r-[1px] border-stone-300 dark:border-slate-700 overflow-y-auto'>
-            <div className='py-2 px-4 text-2xl '> Create new group</div>
+        <div className='h-full flex flex-col border-r-[1px] border-stone-300 dark:border-slate-700 overflow-y-auto'>
+            <div className='flex items-center px-4 h-[68px] bg-white dark:bg-slate-900'>
+                <p className='mr-auto text-2xl'>
+                    <span className='flex items-center h-12'>Create new group</span>
+                </p>
+            </div>
             <div className='flex content-center m-4  mt-0 border-b-2 pb-4'>
                 <input
                     className="w-75% rounded px-3 py-1 bg-stone-200 dark:bg-slate-600 placeholder-gray-400 outline-none',"

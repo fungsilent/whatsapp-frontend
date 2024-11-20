@@ -9,8 +9,8 @@ const Icon = ({ className, textClassName, name = '', type = null }) => {
                     clsx(
                         'w-full h-full inline-flex items-center justify-center overflow-hidden rounded-full',
                         'bg-gray-100',
-                        { 'bg-indigo-500': type === 'friend' },
-                        { 'bg-fuchsia-500	': type === 'group' }
+                        { 'bg-blue-500 text-white': type === 'friend' },
+                        { 'bg-violet-500 text-white': type === 'group' }
                     )
                 )}
             >

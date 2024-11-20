@@ -13,17 +13,12 @@ const Container = () => {
     }
 
     return (
-        <div
-            className={clsx(
-                'relative w-[400px] max-lg:w-[300px] max-md:w-[200px] overflow-hidden',
-                'bg-stone-200 dark:bg-slate-800'
-            )}
-        >
+        <div className={clsx('relative w-[400px] max-lg:w-[300px] max-md:w-[200px] overflow-hidden')}>
             <RoomList />
             <Drawer
                 open={primarySection}
                 onClose={onClose}
-                className='absolute p-0 bg-slate-900 w-full h-full'
+                className='absolute p-0 w-full h-full bg-stone-200'
                 backdrop={false}
             >
                 {primarySection === 'profile' && <Profile />}

@@ -22,7 +22,7 @@ function AddFriend() {
 
     return (
         <div className='h-full flex flex-col border-r-[1px] border-stone-300 dark:border-slate-700 overflow-y-auto'>
-            <div className='flex items-center py-2 px-4 bg-white dark:bg-slate-900'>
+            <div className='flex items-center py-3 px-4 bg-white dark:bg-slate-900'>
                 <p className='mr-auto text-2xl'>
                     <span className='flex items-center h-12'>Add friend</span>
                 </p>
