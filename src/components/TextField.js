@@ -13,7 +13,6 @@ const TextField = ({ className, inputClassName, renderLeft, onEnter, onChange, o
     const handleKeyDown = event => {
         if (event.key === 'Enter' && onEnter) {
             onEnter(event)
-            console.log('enter')
         }
         if (onKeyDown) onKeyDown(event)
     }

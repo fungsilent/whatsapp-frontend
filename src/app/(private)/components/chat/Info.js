@@ -10,7 +10,7 @@ const Info = ({ info, setPanel }) => {
     }
 
     return (
-        <div className='flex gap-4 items-center px-4 py-2 z-20 bg-stone-200 dark:bg-slate-800'>
+        <div className='flex gap-4 items-center px-4 py-2 h-[68px] z-20 bg-stone-200 dark:bg-slate-800'>
             <div
                 className='grid grid-rows-2 grid-cols-[auto_auto] gap-x-4 gap-y-1 items-center mr-auto cursor-pointer'
                 onClick={() => setPanel(panelMap.ROOM_DETAIL.key)}

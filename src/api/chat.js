@@ -12,7 +12,7 @@ export const addFriend = async ({ username }) => {
 }
 
 /* group */
-export const createGroup = async name => {
+export const createGroup = async ({ name }) => {
     return await axiosBackend.post('/group/create', {
         name,
     })

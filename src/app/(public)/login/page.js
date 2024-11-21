@@ -5,7 +5,8 @@ import { redirect } from 'next/navigation'
 import useFetch from '#root/hooks/useFetch'
 import { useAppStore } from '#root/app/store'
 import { signin } from '#root/api/user'
-import { Card, Title, FormField, Button } from '#root/app/(public)/components/share'
+import { Card, Title } from '#root/app/(public)/components/share'
+import { FormField, Button } from '#root/components/Form'
 
 const LoginPage = () => {
     const { setUser } = useAppStore()

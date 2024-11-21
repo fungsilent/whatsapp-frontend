@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Spinner, Popover } from 'flowbite-react'
-import clsx from 'clsx'
 import moment from 'moment'
 import { useText } from '#root/components/TextField'
 import SearchField from '#root/components/SearchField'
