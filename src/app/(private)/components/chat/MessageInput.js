@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Textarea } from 'flowbite-react'
 import useFetch from '#root/hooks/useFetch'
 import { sendRoomMessage } from '#root/api/room'
+import Loader from '#root/components/Loader'
 
 const MessageInput = ({ roomId, info: { isDisable } }) => {
     const [message, setMessage] = useState('')
@@ -9,7 +10,6 @@ const MessageInput = ({ roomId, info: { isDisable } }) => {
 
     const onEnter = () => {
         if (message) {
-            console.log('message', message)
             dispatchSend(() => sendRoomMessage(roomId, { message }))
         }
     }
@@ -35,10 +35,10 @@ const MessageInput = ({ roomId, info: { isDisable } }) => {
     }, [message])
 
     return (
-        <div className='flex gap-4 py-2 px-3 z-20 bg-stone-200 dark:bg-slate-800 relative'>
+        <div className='py-2 px-3 z-20 bg-stone-200 dark:bg-slate-800 relative'>
             <Textarea
                 id='message-input'
-                className='bg-white dark:bg-slate-600 w-full overflow-hidden max-h-40 rounded focus:border-0 focus:ring-0'
+                className='resize-none bg-white dark:bg-slate-600 max-h-40 rounded border-0 focus:border-0 focus:ring-0'
                 placeholder={isDisable ? 'Chat closed' : 'Type a message'}
                 value={message}
                 onChange={e => setMessage(e.target.value)}
@@ -48,9 +48,8 @@ const MessageInput = ({ roomId, info: { isDisable } }) => {
                         onEnter()
                     }
                 }}
-                disabled={isDisable}
+                disabled={isDisable || isLoading}
                 rows={1}
-                style={{ height: 'auto', maxHeight: '10rem' }}
             />
             {error && (
                 <p
@@ -61,9 +60,12 @@ const MessageInput = ({ roomId, info: { isDisable } }) => {
                 </p>
             )}
             {isLoading && (
-                <div className='absolute right-4 top-1/2 transform -translate-y-1/2'>
-                    <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900'></div>
-                </div>
+                <Loader
+                    classNames={{
+                        container: 'absolute left-0 bottom-full w-full',
+                        loader: '!rounded-none !h-1',
+                    }}
+                />
             )}
         </div>
     )

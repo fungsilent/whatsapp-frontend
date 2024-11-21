@@ -2,13 +2,17 @@ import clsx from 'clsx'
 import { Spinner } from 'flowbite-react'
 import TextField from '#root/components/TextField'
 
-export const FormField = ({ className, ...props }) => {
+export const FormField = ({ classNames = {}, ...rest }) => {
     return (
         <TextField
-            className={
-                (clsx('focus-within:ring-2 focus-within:ring-primary-600 focus-within:border-primary-600'), className)
-            }
-            {...props}
+            classNames={{
+                ...classNames,
+                input: clsx(
+                    'focus-within:ring-2 focus-within:ring-primary-600 focus-within:border-primary-600',
+                    classNames.input
+                ),
+            }}
+            {...rest}
         />
     )
 }

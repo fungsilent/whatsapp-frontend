@@ -1,9 +1,10 @@
+import clsx from 'clsx'
 import TextField from '#root/components/TextField'
 
-const SearchField = props => {
+const SearchField = ({ classNames = {}, ...rest }) => {
     return (
         <TextField
-            renderLeft={
+            renderLeft={() => (
                 <svg
                     className='shrink-0 w-6 h-6 text-gray-800 dark:text-stone-200'
                     fill='none'
@@ -16,8 +17,12 @@ const SearchField = props => {
                         d='m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z'
                     />
                 </svg>
-            }
-            {...props}
+            )}
+            {...rest}
+            classNames={{
+                ...classNames,
+                input: clsx('pl-12', classNames.input),
+            }}
         />
     )
 }

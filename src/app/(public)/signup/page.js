@@ -1,53 +1,49 @@
-"use client"
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import useFetch from "#root/hooks/useFetch"
-import { signup } from "#root/api/user"
-import Link from "next/link"
-import { useAppStore } from "#root/app/store"
-import {
-    Card,
-    Title,
-    FormField,
-    Button,
-} from "#root/app/(public)/components/share"
-import PasswordChecklist from "react-password-checklist"
+'use client'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import useFetch from '#root/hooks/useFetch'
+import { signup } from '#root/api/user'
+import Link from 'next/link'
+import { useAppStore } from '#root/app/store'
+import { Card, Title } from '#root/app/(public)/components/share'
+import { FormField, Button } from '#root/components/Form'
+import PasswordChecklist from 'react-password-checklist'
 
 const SignupPage = () => {
     const { setUser } = useAppStore()
     const router = useRouter()
     const [dispatchSignup, user, isLoading, error] = useFetch()
-    const [formError, setFormError] = useState("")
-    const [password, setPassword] = useState("")
-    const [passwordAgain, setPasswordAgain] = useState("")
+    const [formError, setFormError] = useState('')
+    const [password, setPassword] = useState('')
+    const [passwordAgain, setPasswordAgain] = useState('')
     const [form, setForm] = useState({
-        name: "",
-        username: "",
-        password: "",
-        confirmPassword: "",
+        name: '',
+        username: '',
+        password: '',
+        confirmPassword: '',
     })
 
     useEffect(() => {
         if (user) {
             setUser(user)
-            router.push("/")
+            router.push('/')
         }
     }, [user])
 
     const doSignup = () => {
         if (form.password !== form.confirmPassword) {
-            return setFormError("Confirm password incorrect")
+            return setFormError('Confirm password incorrect')
         }
         dispatchSignup(() => signup(form))
     }
 
     // 如果撞名彈警告
     const onFormChange = (name, value) => {
-        if (formError) setFormError("")
-        if (name === "confirmPassword") {
-            setFormError("")
+        if (formError) setFormError('')
+        if (name === 'confirmPassword') {
+            setFormError('')
         }
-        if (name === "username") {
+        if (name === 'username') {
             value = value.toLowerCase()
         }
         setForm({
@@ -56,7 +52,7 @@ const SignupPage = () => {
         })
     }
 
-    const onEnter = (event) => {
+    const onEnter = event => {
         event.preventDefault()
         const form = event.target.form
         const index = [...form].indexOf(event.target)
@@ -65,31 +61,27 @@ const SignupPage = () => {
 
     return (
         <>
-            <section className="flex flex-col items-center justify-center px-6 py-8 h-screen">
-                <i className="flex items-center mb-6 text-2xl font-semibold text-white">
+            <section className='flex flex-col items-center justify-center px-6 py-8 h-screen'>
+                <i className='flex items-center mb-6 text-2xl font-semibold text-white'>
                     <img
-                        className="w-8 h-8 mr-2"
-                        src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-                        alt="logo"
+                        className='w-8 h-8 mr-2'
+                        src='https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg'
+                        alt='logo'
                     />
                     WhatsLam
                 </i>
 
                 <Card>
-                    <Title title="Create an account" />
+                    <Title title='Create an account' />
 
-                    <form className="space-y-4 md:space-y-6">
+                    <form className='space-y-4 md:space-y-6'>
                         <div>
-                            <label className="block mb-2 text-sm font-medium">
-                                Your username
-                            </label>
+                            <label className='block mb-2 text-sm font-medium'>Your username</label>
                             <FormField
-                                name="username"
-                                type="text"
+                                name='username'
+                                type='text'
                                 value={form.username}
-                                onChange={(value) =>
-                                    onFormChange("username", value)
-                                }
+                                onChange={value => onFormChange('username', value)}
                                 onEnter={onEnter}
                                 minLength={4}
                                 maxLength={10}
@@ -98,16 +90,12 @@ const SignupPage = () => {
                         </div>
 
                         <div>
-                            <label className="block mb-2 text-sm font-medium">
-                                Your display name
-                            </label>
+                            <label className='block mb-2 text-sm font-medium'>Your display name</label>
                             <FormField
-                                name="name"
-                                type="text"
+                                name='name'
+                                type='text'
                                 value={form.name}
-                                onChange={(value) =>
-                                    onFormChange("name", value)
-                                }
+                                onChange={value => onFormChange('name', value)}
                                 onEnter={onEnter}
                                 minLength={4}
                                 maxLength={10}
@@ -116,15 +104,13 @@ const SignupPage = () => {
                         </div>
 
                         <div>
-                            <label className="block mb-2 text-sm font-medium">
-                                Password
-                            </label>
+                            <label className='block mb-2 text-sm font-medium'>Password</label>
                             <FormField
-                                name="password"
-                                type="password"
+                                name='password'
+                                type='password'
                                 value={form.password}
-                                onChange={(value) => {
-                                    onFormChange("password", value)
+                                onChange={value => {
+                                    onFormChange('password', value)
                                     setPassword(value)
                                 }}
                                 onEnter={onEnter}
@@ -133,58 +119,50 @@ const SignupPage = () => {
                         </div>
 
                         <div>
-                            <label className="block mb-2 text-sm font-medium">
-                                Confirm password
-                            </label>
+                            <label className='block mb-2 text-sm font-medium'>Confirm password</label>
                             <FormField
-                                name="confirmPassword"
-                                type="password"
+                                name='confirmPassword'
+                                type='password'
                                 value={form.confirmPassword}
-                                onChange={(value) => {
-                                    onFormChange("confirmPassword", value)
+                                onChange={value => {
+                                    onFormChange('confirmPassword', value)
                                     setPasswordAgain(value)
                                 }}
                                 onEnter={onEnter}
                                 required
+                                classNames={{
+                                    container: 'mb-2',
+                                }}
                             />
                             <PasswordChecklist
-                                rules={[
-                                    "minLength",
-                                    "specialChar",
-                                    "number",
-                                    "capital",
-                                    "match",
-                                ]}
+                                rules={['minLength', 'maxLength', 'number', 'letter', 'match']}
                                 minLength={8}
+                                maxLength={20}
                                 value={password}
                                 valueAgain={passwordAgain}
                                 messages={{
-                                    minLength: "Minimum 8 characters.",
-                                    specialChar: "Has special characters.",
-                                    number: "Has a number.",
-                                    capital: "Has a capital letter.",
-                                    match: "Password match.",
+                                    minLength: 'Minimum 8 characters.',
+                                    specialChar: 'Has special characters.',
+                                    number: 'Has a number.',
+                                    capital: 'Has a capital letter.',
+                                    match: 'Password match.',
                                 }}
                             />
                         </div>
 
-                        {(!!formError || !!error) && (
-                            <p className="text-rose-600">
-                                {formError || error}
-                            </p>
-                        )}
+                        {(!!formError || !!error) && <p className='text-rose-600'>{formError || error}</p>}
 
                         <Button
                             isLoading={isLoading}
-                            text="Create an account"
+                            text='Create an account'
                             onClick={doSignup}
                         />
 
-                        <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                            Already have an account?{" "}
+                        <p className='text-sm font-light text-gray-500 dark:text-gray-400'>
+                            Already have an account?{' '}
                             <Link
-                                href="/login"
-                                className="font-medium text-yellow-600 dark:text-yellow-300 hover:underline"
+                                href='/login'
+                                className='font-medium text-yellow-600 dark:text-yellow-300 hover:underline'
                             >
                                 Login here
                             </Link>
