@@ -9,8 +9,8 @@ import { useAppStore } from '#root/app/store'
 import { removeRoom } from '#root/api/room'
 import { removeMember } from '#root/api/chat'
 
-const RoomDetail = ({ roomId }) => {
-    const { user, info } = useAppStore()
+const RoomDetail = () => {
+    const { roomId, user, info } = useAppStore()
 
     switch (info.type) {
         case 'friend': {
@@ -32,7 +32,7 @@ const RoomDetail = ({ roomId }) => {
         }
         case 'group': {
             const date = moment(info.date)
-            const isAdmin = info.members.find(member => member.userId === user.id)?.isAdmin
+            const isAdmin = info.members.find(member => member.userId === user.userId)?.isAdmin
             return (
                 <>
                     <BasicInfo

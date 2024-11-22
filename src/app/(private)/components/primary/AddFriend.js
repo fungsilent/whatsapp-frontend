@@ -49,7 +49,7 @@ const AddFriend = () => {
                     !!users?.length &&
                     users.map(user => (
                         <User
-                            key={user.id}
+                            key={user.userId}
                             {...user}
                         />
                     ))}
@@ -60,20 +60,20 @@ const AddFriend = () => {
 
 const User = ({ username, name }) => {
     const { setRoom } = useAppStore()
-    const [dispatchAdd, data, isLoading, error] = useFetch()
+    const [dispatchAdd, friend, isLoading, error] = useFetch()
 
     const add = () => {
         dispatchAdd(() => addFriend({ username }))
     }
 
     useEffect(() => {
-        if (data) {
-            setRoom(data.roomId)
+        if (friend?.roomId) {
+            setRoom(friend.roomId)
         }
-    }, [data])
+    }, [friend])
 
-    const hasResult = data !== null
-    const err = error || (hasResult && !data.isNew && 'User already be friend')
+    const hasResult = friend !== null
+    const err = error || (hasResult && !friend.isNew && 'User already be friend')
 
     return (
         <li className='flex'>
@@ -106,7 +106,7 @@ const User = ({ username, name }) => {
                                     className={clsx(
                                         'w-6 h-6 cursor-pointer',
                                         { 'text-gray-500 dark:text-white': !hasResult && !err },
-                                        { 'text-emerald-600': hasResult && data.isNew },
+                                        { 'text-emerald-600': hasResult && friend.isNew },
                                         { 'text-rose-600': err }
                                     )}
                                     fill='currentColor'

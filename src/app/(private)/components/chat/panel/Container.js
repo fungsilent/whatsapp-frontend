@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { useAppStore } from '#root/app/store'
 import SearchMessage from './SearchMessage'
 import AddGroupMember from './AddGroupMember'
 import RoomDetail from './RoomDetail'
@@ -18,7 +19,9 @@ export const panelMap = {
     },
 }
 
-const PanelContainer = ({ roomId, width, panel, setPanel }) => {
+const PanelContainer = ({ width }) => {
+    const { panel, setPanel } = useAppStore()
+
     return (
         <div
             className={clsx(
@@ -46,9 +49,9 @@ const PanelContainer = ({ roomId, width, panel, setPanel }) => {
                 </svg>
                 <p>{panelMap[panel]?.title}</p>
             </div>
-            {panel === panelMap.ROOM_DETAIL.key && <RoomDetail roomId={roomId} />}
+            {panel === panelMap.ROOM_DETAIL.key && <RoomDetail />}
             {panel === panelMap.SEARCH_MESSAGE.key && <SearchMessage />}
-            {panel === panelMap.ADD_GROUP_MEMBER.key && <AddGroupMember roomId={roomId} />}
+            {panel === panelMap.ADD_GROUP_MEMBER.key && <AddGroupMember />}
         </div>
     )
 }

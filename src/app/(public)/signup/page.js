@@ -14,8 +14,6 @@ const SignupPage = () => {
     const router = useRouter()
     const [dispatchSignup, user, isLoading, error] = useFetch()
     const [formError, setFormError] = useState('')
-    const [password, setPassword] = useState('')
-    const [passwordAgain, setPasswordAgain] = useState('')
     const [form, setForm] = useState({
         name: '',
         username: '',
@@ -40,23 +38,16 @@ const SignupPage = () => {
     // 如果撞名彈警告
     const onFormChange = (name, value) => {
         if (formError) setFormError('')
-        if (name === 'confirmPassword') {
-            setFormError('')
-        }
-        if (name === 'username') {
-            value = value.toLowerCase()
+        switch (name) {
+            case 'username': {
+                value = value.toLowerCase()
+                break
+            }
         }
         setForm({
             ...form,
             [name]: value,
         })
-    }
-
-    const onEnter = event => {
-        event.preventDefault()
-        const form = event.target.form
-        const index = [...form].indexOf(event.target)
-        form[(index + 1) % form.length].focus()
     }
 
     return (
@@ -82,7 +73,6 @@ const SignupPage = () => {
                                 type='text'
                                 value={form.username}
                                 onChange={value => onFormChange('username', value)}
-                                onEnter={onEnter}
                                 minLength={4}
                                 maxLength={10}
                                 required
@@ -96,7 +86,6 @@ const SignupPage = () => {
                                 type='text'
                                 value={form.name}
                                 onChange={value => onFormChange('name', value)}
-                                onEnter={onEnter}
                                 minLength={4}
                                 maxLength={10}
                                 required
@@ -109,11 +98,7 @@ const SignupPage = () => {
                                 name='password'
                                 type='password'
                                 value={form.password}
-                                onChange={value => {
-                                    onFormChange('password', value)
-                                    setPassword(value)
-                                }}
-                                onEnter={onEnter}
+                                onChange={value => onFormChange('password', value)}
                                 required
                             />
                         </div>
@@ -124,28 +109,22 @@ const SignupPage = () => {
                                 name='confirmPassword'
                                 type='password'
                                 value={form.confirmPassword}
-                                onChange={value => {
-                                    onFormChange('confirmPassword', value)
-                                    setPasswordAgain(value)
-                                }}
-                                onEnter={onEnter}
+                                onChange={value => onFormChange('confirmPassword', value)}
                                 required
                                 classNames={{
                                     container: 'mb-2',
                                 }}
                             />
                             <PasswordChecklist
-                                rules={['minLength', 'maxLength', 'number', 'letter', 'match']}
-                                minLength={8}
-                                maxLength={20}
-                                value={password}
-                                valueAgain={passwordAgain}
+                                rules={['minLength', 'number', 'letter', 'match']}
+                                minLength={6}
+                                value={form.password}
+                                valueAgain={form.confirmPassword}
                                 messages={{
-                                    minLength: 'Minimum 8 characters.',
-                                    specialChar: 'Has special characters.',
-                                    number: 'Has a number.',
-                                    capital: 'Has a capital letter.',
-                                    match: 'Password match.',
+                                    minLength: 'Minimum 6 characters',
+                                    number: 'Has a number',
+                                    letter: 'Has a letter',
+                                    match: 'Password match',
                                 }}
                             />
                         </div>

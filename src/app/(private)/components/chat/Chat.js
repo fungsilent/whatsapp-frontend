@@ -9,7 +9,8 @@ import useSocket from '#root/hooks/useSocket'
 import { useAppStore } from '#root/app/store'
 import { fetchRoomMessage } from '#root/api/room'
 
-const Chat = ({ roomId, children }) => {
+const Chat = ({ children }) => {
+    const { roomId } = useAppStore()
     const { messages, setMessages, addMessages } = useAppStore()
     const [dispatchMessage, newMessages, isLoading, error] = useFetch()
     /*
@@ -35,17 +36,43 @@ const Chat = ({ roomId, children }) => {
         setMessages(newMessages)
     }, [isLoading])
 
+    //
     useSocket(
         (socket, { NEW_ROOM_MESSAGE }) => {
-            const handler = ({ room, ...newMessage }) => {
-                if (room.id === roomId) {
+            const addNewMessage = ({ room, ...newMessage }) => {
+                if (room.roomId === roomId) {
                     addMessages([newMessage])
                 }
             }
-            socket.on(NEW_ROOM_MESSAGE, handler)
-            return () => socket.off(NEW_ROOM_MESSAGE, handler)
+            socket.on(NEW_ROOM_MESSAGE, addNewMessage)
+            return () => socket.off(NEW_ROOM_MESSAGE, addNewMessage)
         },
         [roomId]
+    )
+
+    // update user info (display name)
+    useSocket(
+        (socket, { UPDATE_USER_INFO }) => {
+            const updateUserInfo = userInfo => {
+                setMessages(
+                    messages.map(message => {
+                        if (message.user.userId === userInfo.userId) {
+                            return {
+                                ...message,
+                                user: {
+                                    ...message.user,
+                                    ...userInfo,
+                                },
+                            }
+                        }
+                        return message
+                    })
+                )
+            }
+            socket.on(UPDATE_USER_INFO, updateUserInfo)
+            return () => socket.off(UPDATE_USER_INFO, updateUserInfo)
+        },
+        [messages]
     )
 
     return (
@@ -56,6 +83,7 @@ const Chat = ({ roomId, children }) => {
         >
             <ScrollToEnd />
             {messages.map((message, index) => {
+                console.log(message)
                 const prevMessage = messages[index - 1]
 
                 // date
@@ -64,8 +92,8 @@ const Chat = ({ roomId, children }) => {
                 const isRenderDate = currDate !== prevDate
 
                 // user
-                const prevUser = prevMessage?.user.id
-                const currUser = message.user.id
+                const prevUser = prevMessage?.user.userId
+                const currUser = message.user.userId
                 const isRenderUser = prevUser !== currUser
                 return (
                     <Fragment key={index}>

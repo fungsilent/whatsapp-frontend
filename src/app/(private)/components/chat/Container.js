@@ -89,6 +89,49 @@ const ChatContainer = () => {
         [roomId, info]
     )
 
+    // update room info
+    useSocket(
+        (socket, { UPDATE_USER_INFO }) => {
+            const updateUserInfo = userInfo => {
+                let newInfo = { ...info }
+                switch (info.type) {
+                    case 'friend': {
+                        if (info.userId === userInfo.userId) {
+                            newInfo = {
+                                ...newInfo,
+                                ...userInfo,
+                            }
+                        }
+                        break
+                    }
+                    case 'group': {
+                        // createdBy
+                        if (info.createdBy.userId === userInfo.userId) {
+                            info.createdBy = userInfo
+                        }
+
+                        // members
+                        const index = info.members.findIndex(member => member.userId === userInfo.userId)
+                        if (index !== -1) {
+                            info.members[index] = {
+                                ...info.members[index],
+                                ...userInfo,
+                            }
+                        }
+                        break
+                    }
+                }
+                setInfo({
+                    ...info,
+                    ...userInfo,
+                })
+            }
+            socket.on(UPDATE_USER_INFO, updateUserInfo)
+            return () => socket.off(UPDATE_USER_INFO, updateUserInfo)
+        },
+        [roomId, info]
+    )
+
     /* render */
     const panelWidth = !!panel ? 360 : 0
 
@@ -113,21 +156,15 @@ const ChatContainer = () => {
                             width: `calc(100% - ${!!panel ? panelWidth : 0}px)`,
                         }}
                     >
-                        <Info
-                            info={info}
-                            setPanel={setPanel}
-                        />
-                        <Chat roomId={roomId}>
+                        <Info />
+                        <Chat>
                             {isLoading && (
                                 <div className='absolute z-50 left-[50%] top-[60px] translate-x-[-50%]'>
                                     <Spinner size='lg' />
                                 </div>
                             )}
                         </Chat>
-                        <MessageInput
-                            roomId={roomId}
-                            info={info}
-                        />
+                        <MessageInput />
                     </div>
                     <Panel
                         roomId={roomId}

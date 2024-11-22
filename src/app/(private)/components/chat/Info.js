@@ -1,7 +1,10 @@
 import Icon from '#root/components/Icon'
+import { useAppStore } from '#root/app/store'
 import { panelMap } from './panel/Container'
 
-const Info = ({ info, setPanel }) => {
+const Info = () => {
+    const { info, setPanel } = useAppStore()
+
     const getSubTitle = () => {
         if (false) {
             return 'Message youself'

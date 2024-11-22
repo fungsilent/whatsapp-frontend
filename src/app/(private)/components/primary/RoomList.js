@@ -57,16 +57,22 @@ const RoomList = () => {
 
     // modify room data in list
     useSocket(
-        (socket, { NEW_ROOM_MESSAGE, DISABLE_ROOM }) => {
+        (socket, { NEW_ROOM_MESSAGE, DISABLE_ROOM, UPDATE_USER_INFO }) => {
             // update room last message
             const updateLastMessage = ({ type, room, user, content, date }) => {
                 setList(
-                    updateFriend(list, room.id, {
+                    updateFriend(list, room.roomId, {
                         lastMessage: {
                             type,
                             content,
                             date,
-                            by: room.type === 'group' ? user.name : null,
+                            by:
+                                room.type === 'group'
+                                    ? {
+                                          userId: user.userId,
+                                          name: user.name,
+                                      }
+                                    : null,
                         },
                     })
                 )
@@ -83,9 +89,34 @@ const RoomList = () => {
             }
             socket.on(DISABLE_ROOM, updateDisabled)
 
+            // update user info (display name)
+            const updateUserInfo = info => {
+                setList(
+                    list.map(room => {
+                        switch (room.type) {
+                            case 'friend': {
+                                if (room.userId === info.userId) {
+                                    room.name = info.name
+                                }
+                                break
+                            }
+                            case 'group': {
+                                if (room.lastMessage?.by.userId === info.userId) {
+                                    room.lastMessage.by.name = info.name
+                                }
+                                break
+                            }
+                        }
+                        return room
+                    })
+                )
+            }
+            socket.on(UPDATE_USER_INFO, updateUserInfo)
+
             return () => {
                 socket.off(NEW_ROOM_MESSAGE, updateLastMessage)
                 socket.off(DISABLE_ROOM, updateDisabled)
+                socket.off(UPDATE_USER_INFO, updateUserInfo)
             }
         },
         [list]
@@ -191,7 +222,7 @@ const Chat = ({ roomId, name, lastMessage, isDisable, enableRemove, type }) => {
                         <span className='truncate'>
                             {lastMessage && (
                                 <>
-                                    {lastMessage.by ? `${lastMessage.by} : ` : ''}
+                                    {lastMessage.by ? `${lastMessage.by.name} : ` : ''}
                                     {lastMessage.content}
                                 </>
                             )}
@@ -255,14 +286,14 @@ const Chat = ({ roomId, name, lastMessage, isDisable, enableRemove, type }) => {
  * Helper
  */
 const updateFriend = (list, roomId, data) => {
-    const idnex = list.findIndex(room => room.roomId === roomId)
-    if (idnex === -1) return list
+    const index = list.findIndex(room => room.roomId === roomId)
+    if (index === -1) return list
 
     const updatedFriend = {
-        ...list[idnex],
+        ...list[index],
         ...data,
     }
-    list.splice(idnex, 1)
+    list.splice(index, 1)
     return [updatedFriend, ...list]
 }
 

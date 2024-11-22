@@ -8,6 +8,7 @@ export const socketEvent = {
     DISABLE_ROOM: 'DISABLE_ROOM',
     NEW_ROOM: 'NEW_ROOM',
     MEMBER_LEAVE_ROOM: 'MEMBER_LEAVE_ROOM',
+    UPDATE_USER_INFO: 'UPDATE_USER_INFO',
 }
 
 const useSocket = (socketFunc, dependency = []) => {

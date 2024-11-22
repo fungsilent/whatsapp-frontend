@@ -6,9 +6,11 @@ import SearchField from '#root/components/SearchField'
 import Icon from '#root/components/Icon'
 import Name from '#root/components/Name'
 import useFetch from '#root/hooks/useFetch'
+import { useAppStore } from '#root/app/store'
 import { searchUser, addMember } from '#root/api/chat'
 
-const AddGroupMember = ({ roomId }) => {
+const AddGroupMember = () => {
+    const { roomId } = useAppStore()
     const [search, setSearch, debounceSearch] = useText('', 300)
     const [dispatchSearch, users, isLoading, error] = useFetch()
 
@@ -42,7 +44,7 @@ const AddGroupMember = ({ roomId }) => {
                     !!users?.length &&
                     users.map(user => (
                         <AddMember
-                            key={user.id}
+                            key={user.userId}
                             roomId={roomId}
                             {...user}
                         />

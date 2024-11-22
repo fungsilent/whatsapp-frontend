@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Textarea } from 'flowbite-react'
-import useFetch from '#root/hooks/useFetch'
-import { sendRoomMessage } from '#root/api/room'
 import Loader from '#root/components/Loader'
+import useFetch from '#root/hooks/useFetch'
+import { useAppStore } from '#root/app/store'
+import { sendRoomMessage } from '#root/api/room'
 
-const MessageInput = ({ roomId, info: { isDisable } }) => {
+const MessageInput = () => {
+    const {
+        roomId,
+        info: { isDisable },
+    } = useAppStore()
     const [message, setMessage] = useState('')
     const [dispatchSend, isSent, isLoading, error] = useFetch()
 
@@ -37,7 +42,6 @@ const MessageInput = ({ roomId, info: { isDisable } }) => {
     return (
         <div className='py-2 px-3 z-20 bg-stone-200 dark:bg-slate-800 relative'>
             <Textarea
-                id='message-input'
                 className='resize-none bg-white dark:bg-slate-600 max-h-40 rounded border-0 focus:border-0 focus:ring-0'
                 placeholder={isDisable ? 'Chat closed' : 'Type a message'}
                 value={message}
