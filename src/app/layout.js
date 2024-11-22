@@ -31,6 +31,12 @@ const RootLayout = ({ children }) => {
 
     return (
         <html>
+            <head>
+                <link
+                    rel='icon'
+                    href='logo.svg'
+                />
+            </head>
             <Flowbite theme={{ mode: 'dark' }}>
                 <body className='bg-white dark:bg-zinc-800 text-stone-800 dark:text-stone-100'>
                     {status === STATUS.PENDING && <Loader full />}
