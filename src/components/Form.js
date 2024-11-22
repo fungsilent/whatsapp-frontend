@@ -26,6 +26,7 @@ export const Button = ({ isLoading, onClick, text }) => {
         >
             {isLoading && (
                 <Spinner
+                    color='warning'
                     size='sm'
                     className='mr-3'
                 />
