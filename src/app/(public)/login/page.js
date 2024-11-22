@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import useFetch from '#root/hooks/useFetch'
 import { useAppStore } from '#root/app/store'
@@ -36,13 +37,15 @@ const LoginPage = () => {
 
     return (
         <section className='flex flex-col items-center justify-center px-6 py-8 h-screen'>
-            <i className='flex items-center mb-6 text-2xl font-semibold text-white'>
-                <img
-                    className='w-8 h-8 mr-2'
-                    src='https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg'
+            <i className='flex items-center mb-6 text-2xl font-semibold'>
+                <Image
+                    src='logo.svg'
+                    width={50}
+                    height={50}
                     alt='logo'
+                    className='mr-4'
                 />
-                WhatsLam
+                WhatsWrong
             </i>
             <Card>
                 <Title title='Sign in to your account' />

@@ -1,0 +1,35 @@
+<svg
+    xmlns='http://www.w3.org/2000/svg'
+    viewBox='0 0 86.5999984741211 100'
+>
+    <path
+        fill='#4a93fa'
+        opacity='.2'
+        d='M0 25v50l43.3 25 43.3-25V25L43.3 0 0 25z'
+    ></path>
+    <path
+        fill='#4a93fa'
+        opacity='.8'
+        d='M0 25l86.6 50-43.3 25L0 75V25z'
+    ></path>
+    <path
+        fill='#4a93fa'
+        opacity='.8'
+        d='M43.3 50L0 75l43.3 25 43.3-25-43.3-25z'
+    ></path>
+    <path
+        fill='#4a93fa'
+        opacity='.3'
+        d='M43.3 50l43.3-25L43.3 0 0 25l43.3 25z'
+    ></path>
+    <path
+        fill='#4a93fa'
+        opacity='.2'
+        d='M43.3 0v50L0 25 43.3 0zM43.3 100V50L0 75l43.3 25z'
+    ></path>
+    <path
+        fill='#1378c0'
+        opacity='.3'
+        d='M86.6 25l-43.3 75V50l43.3-25zM0 25l43.3 75L0 75V25z'
+    ></path>
+</svg>
