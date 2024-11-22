@@ -1,7 +1,7 @@
 import { useEffect, Fragment } from 'react'
 import moment from 'moment'
 import clsx from 'clsx'
-import ScrollToBottom, { useSticky, useScrollToEnd } from 'react-scroll-to-bottom'
+import { StickToBottom, useStickToBottomContext } from 'use-stick-to-bottom'
 import Icon from '#root/components/Icon'
 import Name from '#root/components/Name'
 import useFetch from '#root/hooks/useFetch'
@@ -10,8 +10,7 @@ import { useAppStore } from '#root/app/store'
 import { fetchRoomMessage } from '#root/api/room'
 
 const Chat = ({ children }) => {
-    const { roomId } = useAppStore()
-    const { messages, setMessages, addMessages } = useAppStore()
+    const { roomId, messages, setMessages, addMessages } = useAppStore()
     const [dispatchMessage, newMessages, isLoading, error] = useFetch()
     /*
      * TODO: don't fetch all in once, paging is must, but not today :(
@@ -36,7 +35,7 @@ const Chat = ({ children }) => {
         setMessages(newMessages)
     }, [isLoading])
 
-    //
+    // add new message to chat
     useSocket(
         (socket, { NEW_ROOM_MESSAGE }) => {
             const addNewMessage = ({ room, ...newMessage }) => {
@@ -76,58 +75,58 @@ const Chat = ({ children }) => {
     )
 
     return (
-        <ScrollToBottom
-            className='w-full h-full z-20 overflow-y-auto pr-[3px]'
-            scrollViewClassName='flex flex-col gap-2 py-3 px-6'
-            followButtonClassName='hidden'
+        <StickToBottom
+            className='w-full h-full z-20 overflow-y-auto pr-[3px] relative'
+            resize='smooth'
         >
+            <StickToBottom.Content className='flex flex-col gap-2 py-3 px-6'>
+                {messages.map((message, index) => {
+                    const prevMessage = messages[index - 1]
+
+                    // date
+                    const currDate = moment(message.date).format('DD/MM/YYYY')
+                    const prevDate = prevMessage ? moment(prevMessage.date).format('DD/MM/YYYY') : null
+                    const isRenderDate = currDate !== prevDate
+
+                    // user
+                    const prevUser = prevMessage?.user.userId
+                    const currUser = message.user.userId
+                    const isRenderUser = prevUser !== currUser
+                    return (
+                        <Fragment key={index}>
+                            {isRenderDate && (
+                                <div className='flex justify-center sticky top-0 z-30 text-sm'>
+                                    <p className='bg-sky-50 dark:bg-slate-600 text-gray-600 dark:text-stone-300 px-2 py-1 rounded'>
+                                        {currDate}
+                                    </p>
+                                </div>
+                            )}
+                            <Message
+                                {...message}
+                                showUser={isRenderDate || isRenderUser}
+                            />
+                        </Fragment>
+                    )
+                })}
+                {children}
+            </StickToBottom.Content>
             <ScrollToEnd />
-            {messages.map((message, index) => {
-                const prevMessage = messages[index - 1]
-
-                // date
-                const currDate = moment(message.date).format('DD/MM/YYYY')
-                const prevDate = prevMessage ? moment(prevMessage.date).format('DD/MM/YYYY') : null
-                const isRenderDate = currDate !== prevDate
-
-                // user
-                const prevUser = prevMessage?.user.userId
-                const currUser = message.user.userId
-                const isRenderUser = prevUser !== currUser
-                return (
-                    <Fragment key={index}>
-                        {isRenderDate && (
-                            <div className='flex justify-center sticky top-0 z-30 text-sm'>
-                                <p className='bg-sky-50 dark:bg-slate-700 text-gray-600 dark:text-stone-300 px-2 py-1 rounded'>
-                                    {currDate}
-                                </p>
-                            </div>
-                        )}
-                        <Message
-                            {...message}
-                            showUser={isRenderDate || isRenderUser}
-                        />
-                    </Fragment>
-                )
-            })}
-            {children}
-        </ScrollToBottom>
+        </StickToBottom>
     )
 }
 
 const ScrollToEnd = () => {
-    const [sticky] = useSticky()
-    const scrollToEnd = useScrollToEnd()
+    const { isAtBottom, scrollToBottom } = useStickToBottomContext()
 
     return (
         <>
-            {!sticky && (
+            {!isAtBottom && (
                 <i className='absolute right-3 bottom-4 z-30 p-2 cursor-pointer rounded-full bg-white dark:bg-slate-700'>
                     <svg
                         className='w-5 h-5 text-gray-800 dark:text-white'
                         fill='none'
                         viewBox='0 0 24 24'
-                        onClick={scrollToEnd}
+                        onClick={scrollToBottom}
                     >
                         <path
                             stroke='currentColor'
