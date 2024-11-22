@@ -12,7 +12,7 @@ import useFetch from '#root/hooks/useFetch'
 import { fetchRooms, removeRoom } from '#root/api/room'
 
 const RoomList = () => {
-    const [search, setSearch, debounceSearch] = useText('', 300)
+    const [search, setSearch] = useText('', 300)
     const [list, setList] = useState([])
     const [dispatchRoom, rooms, isLoading, error] = useFetch()
     const [enableRemove, setEnableRemove] = useState(false)
@@ -25,11 +25,6 @@ const RoomList = () => {
         if (!rooms) return
         setList(rooms)
     }, [rooms])
-
-    useEffect(() => {
-        if (!rooms) return
-        setList(rooms.filter(room => room.name.includes(debounceSearch)))
-    }, [debounceSearch])
 
     // add new room to list
     useSocket(
@@ -125,6 +120,9 @@ const RoomList = () => {
     /* Event */
     const toggleRemove = () => setEnableRemove(isOpen => !isOpen)
 
+    /* Render */
+    const renderList = list.filter(room => room.name.includes(search))
+
     return (
         <div className='h-full flex flex-col gap-3 bg-white dark:bg-slate-900 border-r-[1px] border-stone-300 dark:border-slate-700 overflow-y-auto'>
             <div className='flex items-center px-4 h-[68px]'>
@@ -159,9 +157,9 @@ const RoomList = () => {
                     <Spinner />
                 </div>
             )}
-            {!isLoading && !!list.length && (
+            {!isLoading && !!renderList.length && (
                 <ul className='flex flex-col overflow-y-auto'>
-                    {list.map(room => (
+                    {renderList.map(room => (
                         <Chat
                             key={room.roomId}
                             {...room}
@@ -170,7 +168,7 @@ const RoomList = () => {
                     ))}
                 </ul>
             )}
-            {!isLoading && !list.length && <p className='py-6 text-sm text-center'>No chats found</p>}
+            {!isLoading && !renderList.length && <p className='py-6 text-sm text-center'>No chats found</p>}
         </div>
     )
 }

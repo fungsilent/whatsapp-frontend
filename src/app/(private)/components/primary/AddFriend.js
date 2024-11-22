@@ -125,7 +125,7 @@ const User = ({ username, name }) => {
                         type='username'
                         className='truncate'
                     >
-                        {name}
+                        {username}
                     </Name>
                 </div>
             </div>

@@ -83,7 +83,6 @@ const Chat = ({ children }) => {
         >
             <ScrollToEnd />
             {messages.map((message, index) => {
-                console.log(message)
                 const prevMessage = messages[index - 1]
 
                 // date
@@ -170,7 +169,7 @@ const Message = ({ showUser, messageId, user, content, date }) => {
                         {/* <Name type='username'>{user.username}</Name> */}
                     </p>
                 )}
-                <p className='whitespace-pre'>{content}</p>
+                <p className='break-all'>{content}</p>
                 <p className='self-end text-xs text-gray-600 dark:text-gray-400'>{moment(date).format('HH:mm')}</p>
             </div>
         </div>

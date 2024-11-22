@@ -12,6 +12,7 @@ export const useText = (initText, delay) => {
 const TextField = ({ classNames = {}, renderLeft, onEnter, onChange, onKeyDown, ...rest }) => {
     const handleKeyDown = event => {
         if (event.key === 'Enter' && onEnter) {
+            event.preventDefault()
             onEnter(event)
         }
         if (onKeyDown) onKeyDown(event)

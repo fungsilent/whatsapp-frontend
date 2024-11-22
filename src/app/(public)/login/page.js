@@ -50,7 +50,7 @@ const LoginPage = () => {
             <Card>
                 <Title title='Sign in to your account' />
 
-                <form className='space-y-4 md:space-y-6'>
+                <div className='space-y-4 md:space-y-6'>
                     <div>
                         <label className='block mb-2 text-sm font-medium'>Username</label>
                         <FormField
@@ -90,7 +90,7 @@ const LoginPage = () => {
                             Sign up
                         </Link>
                     </p>
-                </form>
+                </div>
             </Card>
         </section>
     )

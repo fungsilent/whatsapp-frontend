@@ -40,25 +40,6 @@ const ChatContainer = () => {
         [roomId]
     )
 
-    // update group members list when someone leave room
-    useSocket(
-        (socket, { MEMBER_LEAVE_ROOM }) => {
-            const leaveRoom = ({ roomId: leaveRoomId, memberId }) => {
-                if (leaveRoomId !== roomId) return
-                const members = info.members.filter(member => member.userId !== memberId)
-                const newInfo = {
-                    ...info,
-                    members,
-                    membersCount: members.length,
-                }
-                setInfo(newInfo)
-            }
-            socket.on(MEMBER_LEAVE_ROOM, leaveRoom)
-            return () => socket.off(MEMBER_LEAVE_ROOM, leaveRoom)
-        },
-        [roomId, info]
-    )
-
     // clear chat section when user remove chat / leave group
     useSocket(
         (socket, { REMOVE_ROOM }) => {
@@ -107,24 +88,21 @@ const ChatContainer = () => {
                     case 'group': {
                         // createdBy
                         if (info.createdBy.userId === userInfo.userId) {
-                            info.createdBy = userInfo
+                            newInfo.createdBy = userInfo
                         }
 
                         // members
                         const index = info.members.findIndex(member => member.userId === userInfo.userId)
                         if (index !== -1) {
-                            info.members[index] = {
-                                ...info.members[index],
+                            newInfo.members[index] = {
+                                ...newInfo.members[index],
                                 ...userInfo,
                             }
                         }
                         break
                     }
                 }
-                setInfo({
-                    ...info,
-                    ...userInfo,
-                })
+                setInfo(newInfo)
             }
             socket.on(UPDATE_USER_INFO, updateUserInfo)
             return () => socket.off(UPDATE_USER_INFO, updateUserInfo)

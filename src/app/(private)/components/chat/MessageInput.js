@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Textarea } from 'flowbite-react'
 import Loader from '#root/components/Loader'
 import useFetch from '#root/hooks/useFetch'
@@ -10,14 +10,9 @@ const MessageInput = () => {
         roomId,
         info: { isDisable },
     } = useAppStore()
+    const input = useRef()
     const [message, setMessage] = useState('')
     const [dispatchSend, isSent, isLoading, error] = useFetch()
-
-    const onEnter = () => {
-        if (message) {
-            dispatchSend(() => sendRoomMessage(roomId, { message }))
-        }
-    }
 
     useEffect(() => {
         if (isSent) {
@@ -32,19 +27,26 @@ const MessageInput = () => {
     }, [isDisable])
 
     useEffect(() => {
-        const textarea = document.getElementById('message-input')
-        if (textarea) {
-            textarea.style.height = 'auto'
-            textarea.style.height = `${textarea.scrollHeight}px`
-        }
+        const textarea = input.current
+        if (!textarea) return
+        textarea.style.height = 'auto'
+        textarea.style.height = `${textarea.scrollHeight}px`
     }, [message])
+
+    const onEnter = () => {
+        if (message) {
+            dispatchSend(() => sendRoomMessage(roomId, { message }))
+        }
+    }
 
     return (
         <div className='py-2 px-3 z-20 bg-stone-200 dark:bg-slate-800 relative'>
             <Textarea
+                ref={input}
                 className='resize-none bg-white dark:bg-slate-600 max-h-40 rounded border-0 focus:border-0 focus:ring-0'
                 placeholder={isDisable ? 'Chat closed' : 'Type a message'}
                 value={message}
+                maxlength={3000}
                 onChange={e => setMessage(e.target.value)}
                 onKeyDown={e => {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -54,6 +56,7 @@ const MessageInput = () => {
                 }}
                 disabled={isDisable || isLoading}
                 rows={1}
+                style={{ height: 'auto', maxHeight: '10rem' }}
             />
             {error && (
                 <p

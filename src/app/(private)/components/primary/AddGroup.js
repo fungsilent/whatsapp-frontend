@@ -39,7 +39,7 @@ const AddGroup = () => {
             </div>
             <div className='mb-3 p-3 bg-white dark:bg-slate-900'>Your New Friends Await!</div>
 
-            <form className='flex-1 flex flex-col gap-6 p-3 bg-white dark:bg-slate-900 overflow-y-auto'>
+            <div className='flex-1 flex flex-col gap-6 p-3 bg-white dark:bg-slate-900 overflow-y-auto'>
                 <div className='flex flex-col items-center gap-3 px-4 py-3 mb-3 bg-white dark:bg-slate-900'>
                     <Icon
                         name={newGroup.name}
@@ -68,7 +68,7 @@ const AddGroup = () => {
                 />
 
                 {error && <p className='text-rose-600'>{error}</p>}
-            </form>
+            </div>
         </div>
     )
 }
