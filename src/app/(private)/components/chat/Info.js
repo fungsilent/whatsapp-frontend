@@ -26,7 +26,7 @@ const Info = () => {
                     type={info.type}
                     className='row-span-2'
                 />
-                <div>{info.name}</div>
+                <div className='truncate'>{info.name}</div>
                 <div className='text-sm text-gray-500 dark:text-gray-400 truncate'>{getSubTitle()}</div>
             </div>
 
