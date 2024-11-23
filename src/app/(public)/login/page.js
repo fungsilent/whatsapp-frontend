@@ -57,7 +57,7 @@ const LoginPage = () => {
                             name='username'
                             type='text'
                             value={username}
-                            onChange={value => setFormValue('username', value)}
+                            onChange={value => setFormValue('username', value.toLowerCase())}
                             onEnter={doLogin}
                         />
                     </div>
