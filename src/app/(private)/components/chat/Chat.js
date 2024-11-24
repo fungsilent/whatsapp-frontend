@@ -1,6 +1,7 @@
 import { useEffect, Fragment } from 'react'
 import moment from 'moment'
 import clsx from 'clsx'
+import { overrideTailwindClasses } from 'tailwind-override'
 import { StickToBottom, useStickToBottomContext } from 'use-stick-to-bottom'
 import Icon from '#root/components/Icon'
 import Name from '#root/components/Name'
@@ -158,9 +159,11 @@ const Message = ({ showUser, messageId, user, content, date }) => {
         <div className={clsx('flex gap-3 z-20 max-w-[60%]', { 'self-end mr-7': user.isSelf })}>
             {!user.isSelf && renderIcon()}
             <div
-                className={clsx('flex flex-col bg-sky-50 dark:bg-slate-700 p-2 rounded drop-shadow-sm', {
-                    'bg-green-200 dark:bg-teal-800': user.isSelf,
-                })}
+                className={clsx(
+                    'flex flex-col p-2 rounded drop-shadow-sm',
+                    { 'bg-sky-50 dark:bg-slate-700': !user.isSelf },
+                    { 'bg-green-200 dark:bg-teal-800': user.isSelf }
+                )}
             >
                 {!user.isSelf && (
                     <p className='flex gap-2 text-sm'>

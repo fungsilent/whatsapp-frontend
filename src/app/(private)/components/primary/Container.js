@@ -13,7 +13,7 @@ const Container = () => {
     }
 
     return (
-        <div className={clsx('relative w-[400px] max-lg:w-[300px] max-md:w-[200px] overflow-hidden')}>
+        <div className={clsx('relative w-[400px] max-lg:w-[250px] max-md:w-[200px] overflow-hidden')}>
             <RoomList />
             <Drawer
                 open={primarySection}
