@@ -16,12 +16,11 @@
  * Loader
  */
 .loader {
-    @apply relative w-full h-2 rounded overflow-hidden bg-slate-700;
+    @apply relative w-full h-2 rounded overflow-hidden bg-gray-300 dark:bg-slate-700;
 }
 .loader::before {
-    content: '';
     animation: loader 1s infinite ease-in-out;
-    @apply absolute left-[-10%] top-0 rounded w-[10%] h-full bg-primary-600;
+    @apply content-[''] absolute left-[-10%] top-0 rounded w-[10%] h-full bg-primary-600;
 }
 @keyframes loader {
     50% {
