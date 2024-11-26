@@ -7,10 +7,13 @@ const Info = () => {
 
     /* Render */
     const getSubTitle = () => {
-        if (false) {
-            return 'Message youself'
+        // if (false) {
+        //     return 'Message youself'
+        // }
+        if (info.type) {
+            return `Click here for ${info.type} info`
         }
-        return `Click here for ${info.type} info`
+        return ''
     }
 
     const isAdmin = !!info.members?.find(member => member.userId === user.userId)?.isAdmin
