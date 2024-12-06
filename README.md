@@ -1,4 +1,4 @@
-# Demo
+# whatsapp-frontend
 deployed on [vercel](https://vercel.com/)
 
 URL: [https://whatsapp-frontend-seven-mu.vercel.app/](https://whatsapp-frontend-seven-mu.vercel.app/)
